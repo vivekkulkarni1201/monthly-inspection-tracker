@@ -13,9 +13,9 @@
 
 <div class="app">
   <aside class="sidebar">
-    <div class="brand brand-integrated">
-      <div class="vertiv-logo"><i></i></div>
-      <div class="brand-copy"><strong>VERTIV</strong><small>Inspection Portal</small></div>
+    <div class="brand brand-v6">
+      <div class="brand-emblem" aria-hidden="true"><i></i></div>
+      <div class="brand-copy"><strong>VERTIV</strong><small>INSPECTION CONTROL</small></div>
     </div>
 
     <nav>
@@ -49,31 +49,13 @@
     </header>
 
     <main>
-      <section class="kpi-grid kpi-neon">
-        <article class="kpi kpi-blue">
-          <div class="kpi-icon factory-icon"><span></span></div>
-          <div><label>Total UPS Manufactured</label><strong id="kpiManufactured">0</strong></div>
-        </article>
-        <article class="kpi kpi-cyan">
-          <div class="kpi-icon clipboard-icon"><span></span></div>
-          <div><label>Offered for Inspection</label><strong id="kpiOffered">0</strong></div>
-        </article>
-        <article class="kpi kpi-green">
-          <div class="kpi-icon check-icon">✓</div>
-          <div><label>Completed</label><strong id="kpiCompleted">0</strong></div>
-        </article>
-        <article class="kpi kpi-amber">
-          <div class="kpi-icon clock-icon">◷</div>
-          <div><label>Delayed</label><strong id="kpiDelayed">0</strong></div>
-        </article>
-        <article class="kpi kpi-red">
-          <div class="kpi-icon cancel-icon">✕</div>
-          <div><label>Cancelled</label><strong id="kpiCancelled">0</strong></div>
-        </article>
-        <article class="kpi kpi-purple">
-          <div class="kpi-icon waiver-icon">▣</div>
-          <div><label>Waiver</label><strong id="kpiWaiver">0</strong></div>
-        </article>
+      <section class="kpi-grid kpi-v6">
+        <article class="kpi kpi-blue"><div class="kpi-glow"></div><div class="kpi-symbol symbol-factory"></div><div class="kpi-copy"><label>Total UPS Manufactured</label><strong id="kpiManufactured">0</strong><small>Monthly production</small></div></article>
+        <article class="kpi kpi-cyan"><div class="kpi-glow"></div><div class="kpi-symbol symbol-offered"></div><div class="kpi-copy"><label>Offered for Inspection</label><strong id="kpiOffered">0</strong><small>Inspection quantity</small></div></article>
+        <article class="kpi kpi-green"><div class="kpi-glow"></div><div class="kpi-symbol symbol-check">✓</div><div class="kpi-copy"><label>Completed</label><strong id="kpiCompleted">0</strong><small>Inspection complete</small></div></article>
+        <article class="kpi kpi-amber"><div class="kpi-glow"></div><div class="kpi-symbol symbol-clock">◷</div><div class="kpi-copy"><label>Delayed</label><strong id="kpiDelayed">0</strong><small>Behind schedule</small></div></article>
+        <article class="kpi kpi-red"><div class="kpi-glow"></div><div class="kpi-symbol symbol-cancel">×</div><div class="kpi-copy"><label>Cancelled</label><strong id="kpiCancelled">0</strong><small>Inspection cancelled</small></div></article>
+        <article class="kpi kpi-purple"><div class="kpi-glow"></div><div class="kpi-symbol symbol-waiver">W</div><div class="kpi-copy"><label>Waiver</label><strong id="kpiWaiver">0</strong><small>Inspection waived</small></div></article>
       </section>
 
       <section class="dashboard-grid dashboard-grid-v5">
@@ -93,7 +75,7 @@
             <div><h3>Monthly Inspection Trend</h3><p>Total UPS manufactured vs offered for inspection</p></div>
             <span class="pill">Jan–Dec 2026</span>
           </div>
-          <canvas id="monthlyChart"></canvas>
+          <div class="trend-viewport"><div class="trend-inner"><canvas id="monthlyChart"></canvas></div></div>
         </article>
 
         <article class="card chart-card donut-card">

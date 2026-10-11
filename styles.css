@@ -282,3 +282,47 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
   .custom-month,.month-button{width:100%}
   .month-menu{left:0;right:auto;width:100%}
 }
+
+/* V6 VISUAL POLISH */
+.brand-v6{min-height:58px;margin:0 2px 14px;padding:8px 10px 13px;display:flex;align-items:center;gap:10px;position:relative}
+.brand-v6:after{content:"";position:absolute;left:8px;right:8px;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(52,154,225,.72),transparent)}
+.brand-emblem{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#fff,#dbe9f5);box-shadow:0 0 0 1px rgba(255,255,255,.72),0 0 20px rgba(48,163,255,.24);position:relative;flex:0 0 auto}
+.brand-emblem:before,.brand-emblem:after,.brand-emblem i{content:"";position:absolute;width:0;height:0;border-style:solid}
+.brand-emblem:before{left:6px;top:10px;border-width:0 7px 12px 7px;border-color:transparent transparent #0b2842 transparent;transform:rotate(180deg)}
+.brand-emblem:after{right:6px;top:10px;border-width:0 7px 12px 7px;border-color:transparent transparent #0b2842 transparent;transform:rotate(180deg)}
+.brand-emblem i{left:12px;top:15px;border-width:0 7px 11px 7px;border-color:transparent transparent #0b2842 transparent}
+.brand-v6 .brand-copy strong{font-size:20px;letter-spacing:1.1px;line-height:1;text-shadow:0 0 18px rgba(157,213,255,.16)}
+.brand-v6 .brand-copy small{margin-top:5px;font-size:8px;letter-spacing:1.65px;color:#7296b1}
+
+.kpi-v6 .kpi{min-height:82px;height:82px;padding:10px 13px;gap:11px;border-width:1px;backdrop-filter:blur(8px);overflow:hidden;transform:translateZ(0)}
+.kpi-v6 .kpi:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.13),transparent 27%),radial-gradient(circle at 92% 12%,rgba(255,255,255,.11),transparent 28%);pointer-events:none}
+.kpi-v6 .kpi:after{width:105px;height:105px;right:-50px;bottom:-67px;filter:blur(2px);opacity:.7}
+.kpi-v6 .kpi-glow{position:absolute;left:16px;right:16px;bottom:-1px;height:2px;border-radius:999px}
+.kpi-v6 .kpi-blue .kpi-glow{background:#33a9ff;box-shadow:0 0 14px #149bff}.kpi-v6 .kpi-cyan .kpi-glow{background:#22e3db;box-shadow:0 0 14px #17d9d1}
+.kpi-v6 .kpi-green .kpi-glow{background:#37df8f;box-shadow:0 0 14px #29d47e}.kpi-v6 .kpi-amber .kpi-glow{background:#ffc24c;box-shadow:0 0 14px #ffad16}
+.kpi-v6 .kpi-red .kpi-glow{background:#ff6078;box-shadow:0 0 14px #ff3e59}.kpi-v6 .kpi-purple .kpi-glow{background:#c979ff;box-shadow:0 0 14px #b55fff}
+.kpi-v6 .kpi-blue{background:linear-gradient(135deg,#0c355f,#09223d 72%);box-shadow:0 0 22px rgba(18,132,255,.24),0 12px 24px #0006}
+.kpi-v6 .kpi-cyan{background:linear-gradient(135deg,#0b3d45,#092733 72%);box-shadow:0 0 22px rgba(18,212,202,.20),0 12px 24px #0006}
+.kpi-v6 .kpi-green{background:linear-gradient(135deg,#0c3d2b,#08281e 72%);box-shadow:0 0 22px rgba(43,212,127,.20),0 12px 24px #0006}
+.kpi-v6 .kpi-amber{background:linear-gradient(135deg,#41300d,#29210d 72%);box-shadow:0 0 22px rgba(255,179,29,.18),0 12px 24px #0006}
+.kpi-v6 .kpi-red{background:linear-gradient(135deg,#41151f,#290e15 72%);box-shadow:0 0 22px rgba(255,64,91,.19),0 12px 24px #0006}
+.kpi-v6 .kpi-purple{background:linear-gradient(135deg,#341449,#24102f 72%);box-shadow:0 0 22px rgba(180,94,255,.20),0 12px 24px #0006}
+.kpi-symbol{width:42px;height:42px;min-width:42px;border-radius:12px;display:grid;place-items:center;font-size:23px;font-weight:700;position:relative;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.08)}
+.kpi-copy{min-width:0;position:relative;z-index:2}.kpi-v6 .kpi-copy label{font-size:11px;font-weight:750;color:#d5e3ef;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-v6 .kpi-copy strong{font-size:28px;font-weight:800;letter-spacing:-.7px;line-height:1;margin-top:4px}.kpi-v6 .kpi-copy small{display:block;margin-top:3px;font-size:8.5px;color:#7694aa;white-space:nowrap}
+.kpi-blue .kpi-symbol{color:#79caff}.kpi-cyan .kpi-symbol{color:#67fff4}.kpi-green .kpi-symbol{color:#77f4ad}.kpi-amber .kpi-symbol{color:#ffd26a}.kpi-red .kpi-symbol{color:#ff8295}.kpi-purple .kpi-symbol{color:#d79aff}
+.symbol-factory:before{content:"";position:absolute;width:23px;height:16px;bottom:8px;left:8px;border:2px solid currentColor;border-top:none;border-radius:2px}
+.symbol-factory:after{content:"";position:absolute;left:8px;top:8px;width:5px;height:13px;background:currentColor;box-shadow:8px 5px 0 currentColor,16px 2px 0 currentColor}
+.symbol-offered:before{content:"";position:absolute;width:19px;height:23px;border:2px solid currentColor;border-radius:3px}
+.symbol-offered:after{content:"";position:absolute;top:7px;width:9px;height:4px;border-radius:4px;background:currentColor;box-shadow:0 8px 0 -1px currentColor,0 13px 0 -1px currentColor}
+
+.dashboard-grid-v5 .card{border-color:rgba(37,114,166,.78);background:linear-gradient(180deg,rgba(12,38,61,.96),rgba(7,26,43,.98));box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 14px 32px #0005}
+.dashboard-grid-v5 .card-head{padding-bottom:6px;border-bottom:1px solid rgba(46,99,138,.22)}
+.trend-viewport{width:100%;height:226px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#2b648d transparent}
+.trend-inner{height:224px;min-width:680px}.trend-inner canvas{height:224px!important;width:100%!important}
+.trend-viewport::-webkit-scrollbar{height:5px}.trend-viewport::-webkit-scrollbar-thumb{background:#2a638d;border-radius:99px}
+.donut-canvas:before{content:"";position:absolute;width:154px;height:154px;border-radius:50%;box-shadow:0 0 30px rgba(30,154,255,.07),inset 0 0 24px rgba(255,255,255,.015);pointer-events:none}
+.smart-legend{gap:5px}.legend-row{background:linear-gradient(90deg,rgba(16,48,74,.42),rgba(9,29,46,.2));border-color:rgba(49,102,141,.25);padding:5px 7px}
+
+@media(max-width:1450px){.kpi-v6 .kpi-copy small{display:none}.kpi-v6 .kpi-copy label{font-size:10px}.kpi-symbol{width:38px;height:38px;min-width:38px}}
+@media(max-width:720px){.kpi-v6 .kpi{height:70px;min-height:70px;padding:8px 9px}.kpi-v6 .kpi-copy label{font-size:9.5px;white-space:normal;line-height:1.1}.kpi-v6 .kpi-copy strong{font-size:24px}.kpi-symbol{width:34px;height:34px;min-width:34px;border-radius:9px;font-size:19px}.trend-inner{min-width:640px}.brand-v6{display:none}}

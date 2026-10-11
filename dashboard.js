@@ -95,7 +95,7 @@ function drawProduct(rows){
       backgroundColor:arr.map((_,i)=>PRODUCT_COLORS[i%PRODUCT_COLORS.length]),
       borderColor:"#081a2b",borderWidth:3,hoverOffset:7
     }]},
-    options:{cutout:"72%",plugins:{legend:{display:false},tooltip:{callbacks:{
+    options:{cutout:"74%",rotation:-90,circumference:360,plugins:{legend:{display:false},tooltip:{callbacks:{
       label:(ctx)=>{const pct=total?Math.round(ctx.raw/total*100):0;return ` ${ctx.label}: ${ctx.raw} (${pct}%)`}
     }}}}
   })
@@ -106,33 +106,29 @@ function drawMonthly(){
   const manufactured=keys.map(k=>+production[k]||0);
   const offered=keys.map(k=>qtySum(inspections.filter(r=>monthKey(r.planned_date||r.actual_date)===k)));
   monthlyChart?.destroy();
+
+  const ctx=$("monthlyChart").getContext("2d");
+  const offeredGradient=ctx.createLinearGradient(0,0,0,240);
+  offeredGradient.addColorStop(0,"rgba(30,187,255,1)");
+  offeredGradient.addColorStop(.6,"rgba(18,128,255,.88)");
+  offeredGradient.addColorStop(1,"rgba(18,92,225,.58)");
+
+  const madeGradient=ctx.createLinearGradient(0,0,0,240);
+  madeGradient.addColorStop(0,"rgba(206,224,239,.62)");
+  madeGradient.addColorStop(1,"rgba(116,145,172,.20)");
+
   monthlyChart=new Chart($("monthlyChart"),{
     type:"bar",
-    data:{labels:MONTHS.map(m=>m.slice(0,3)),datasets:[
-      {
-        label:"Total UPS Manufactured",
-        data:manufactured,
-        backgroundColor:"rgba(139,166,191,.48)",
-        borderColor:"rgba(198,219,237,.72)",
-        borderWidth:1,borderRadius:7,barPercentage:.86,categoryPercentage:.72,order:2
-      },
-      {
-        label:"Offered for Inspection",
-        data:offered,
-        backgroundColor:"rgba(26,162,255,.98)",
-        borderColor:"#6ec4ff",
-        borderWidth:1,borderRadius:7,barPercentage:.52,categoryPercentage:.72,order:1
-      }
+    data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[
+      {label:"Total UPS Manufactured",data:manufactured,backgroundColor:madeGradient,borderColor:"rgba(207,229,247,.75)",borderWidth:1,borderRadius:8,borderSkipped:false,barPercentage:.82,categoryPercentage:.76,order:2},
+      {label:"Offered for Inspection",data:offered,backgroundColor:offeredGradient,borderColor:"rgba(116,214,255,.96)",borderWidth:1,borderRadius:8,borderSkipped:false,barPercentage:.46,categoryPercentage:.76,order:1}
     ]},
-    options:{
-      maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:"#dceaf6",usePointStyle:true,boxWidth:10,padding:16}}},
-      scales:{
-        x:{grid:{display:false},ticks:{color:"#d6e5f2",autoSkip:false,maxRotation:0,minRotation:0,font:{size:10}}},
-        y:{beginAtZero:true,grid:{color:"rgba(89,130,163,.22)"},ticks:{color:"#c8d9e7",precision:0}}
-      }
-    }
-  })
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{left:4,right:8,top:4,bottom:0}},interaction:{mode:"index",intersect:false},
+      plugins:{legend:{position:"top",align:"end",labels:{color:"#dceaf6",usePointStyle:true,pointStyle:"rectRounded",boxWidth:10,boxHeight:10,padding:16,font:{size:10,weight:"600"}}},
+        tooltip:{backgroundColor:"rgba(5,18,31,.96)",titleColor:"#fff",bodyColor:"#dceaf6",borderColor:"#2d6f9c",borderWidth:1,padding:10}},
+      scales:{x:{offset:true,grid:{display:false},ticks:{color:"#cfe0ed",autoSkip:false,maxRotation:0,minRotation:0,padding:6,font:{size:10,weight:"600"}},border:{color:"rgba(85,129,161,.32)"}},
+        y:{beginAtZero:true,grace:"10%",grid:{color:"rgba(86,129,161,.16)",drawTicks:false},ticks:{color:"#91abc0",precision:0,padding:8,font:{size:10}},border:{display:false}}}}
+  });
 }
 
 function drawIssues(rows){
@@ -158,7 +154,7 @@ function drawIssues(rows){
       backgroundColor:arr.map((_,i)=>ISSUE_COLORS[i%ISSUE_COLORS.length]),
       borderColor:"#081a2b",borderWidth:3,hoverOffset:7
     }]},
-    options:{cutout:"72%",plugins:{legend:{display:false},tooltip:{callbacks:{
+    options:{cutout:"74%",rotation:-90,circumference:360,plugins:{legend:{display:false},tooltip:{callbacks:{
       label:(ctx)=>{const pct=total?Math.round(ctx.raw/total*100):0;return ` ${ctx.label}: ${ctx.raw} (${pct}%)`}
     }}}}
   })
