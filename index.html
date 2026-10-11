@@ -10,150 +10,195 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo">V</div>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <div class="brand-mark">V</div>
+      <div class="brand-copy">
+        <strong>VERTIV</strong>
+        <span>Inspection Portal</span>
+      </div>
+    </div>
+
+    <nav>
+      <button class="nav-item active">⌂ <span>Dashboard</span></button>
+      <button class="nav-item">▤ <span>Monthly Register</span></button>
+      <button class="nav-item">▥ <span>Reports</span></button>
+      <button class="nav-item">◫ <span>Calendar View</span></button>
+      <div class="nav-divider"></div>
+      <button class="nav-item">◉ <span>Master Data</span></button>
+      <button class="nav-item">♟ <span>Engineer List</span></button>
+      <button class="nav-item">◆ <span>Issue Types</span></button>
+      <button class="nav-item">⬇ <span>Excel Upload</span></button>
+      <button id="sideAdmin" class="nav-item">⚙ <span>Admin Settings</span></button>
+    </nav>
+
+    <div class="side-status">
+      <div class="status-dot"></div>
+      <div>
+        <strong id="sideMode">Connecting...</strong>
+        <span>Shared team portal</span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="content-shell">
+    <header class="topbar">
       <div>
         <h1>Monthly Inspection Tracking</h1>
         <p>Factory Acceptance, Inspection & Report Status</p>
       </div>
+      <div class="header-actions">
+        <div class="month-select-wrap">
+          <span>📅</span>
+          <select id="monthPicker"></select>
+        </div>
+        <button id="btnAdmin" class="ghost">⚙ Admin</button>
+        <button id="btnAdd" class="primary">＋ Add New Entry</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="kpis">
+        <div class="kpi blue"><div class="kpi-icon">🏭</div><div><span>Total UPS Manufactured</span><b id="kpiManufactured">0</b></div></div>
+        <div class="kpi cyan"><div class="kpi-icon">📋</div><div><span>Offered for Inspection</span><b id="kpiOffered">0</b></div></div>
+        <div class="kpi green"><div class="kpi-icon">✓</div><div><span>Completed</span><b id="kpiCompleted">0</b></div></div>
+        <div class="kpi amber"><div class="kpi-icon">◷</div><div><span>Delayed</span><b id="kpiDelayed">0</b></div></div>
+        <div class="kpi red"><div class="kpi-icon">✕</div><div><span>Cancelled</span><b id="kpiCancelled">0</b></div></div>
+        <div class="kpi purple"><div class="kpi-icon">▣</div><div><span>Waiver</span><b id="kpiWaiver">0</b></div></div>
+      </section>
+
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-title-row"><div class="panel-title">Inspection by Product Type</div><span>This Month</span></div>
+          <canvas id="productChart"></canvas>
+        </div>
+        <div class="panel wide">
+          <div class="panel-title-row"><div class="panel-title">Monthly Inspection Trend</div><span>Manufactured vs Offered</span></div>
+          <canvas id="monthlyChart"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-title-row"><div class="panel-title">Issue Type Summary</div><span>This Month</span></div>
+          <canvas id="issueChart"></canvas>
+        </div>
+      </section>
+
+      <section class="filter-card">
+        <div class="filters">
+          <select id="filterType"><option value="">All UPS Types</option></select>
+          <select id="filterStatus">
+            <option value="">All Status</option>
+            <option>Completed</option><option>Delayed</option><option>Cancelled</option><option>Waiver</option><option>Planned</option>
+          </select>
+          <select id="filterIssue"><option value="">All Issue Types</option></select>
+          <input id="searchBox" placeholder="Search customer, project, engineer, issue..." />
+          <button id="btnReset" class="ghost">Reset</button>
+          <button id="btnExport" class="green-btn">Excel Export</button>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <div class="table-head">
+          <div>
+            <h3>Monthly Inspection Register</h3>
+            <p>Update inspection dates, status, issue and remarks from one place.</p>
+          </div>
+          <button id="btnAdd2" class="primary compact">＋ Add Entry</button>
+        </div>
+        <div class="table-wrap">
+          <table id="inspectionTable">
+            <thead>
+              <tr>
+                <th>#</th><th>Customer / Project</th><th>Qty</th><th>kVA</th><th>Type</th>
+                <th>Inspection Given By</th><th>Planned Date</th>
+                <th>Revised 1</th><th>Revised 2</th><th>Revised 3</th><th>Revised 4</th><th>Revised 5</th>
+                <th>Actual Inspection Date</th><th>Days / Delay</th><th>Status</th>
+                <th>Issue Type</th><th>Issue at the Time</th><th>Remarks</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inspectionBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="foot-note" id="modeNote"></div>
+    </main>
+  </div>
+</div>
+
+<dialog id="entryDialog">
+  <form method="dialog" id="entryForm">
+    <div class="dialog-head"><div><h2 id="entryTitle">Add Inspection Entry</h2><p>Fill or update inspection details.</p></div><button value="cancel" class="x">×</button></div>
+    <input type="hidden" id="entryId">
+    <div class="form-grid">
+      <label>Customer / Project<input id="customer" required></label>
+      <label>Qty<input id="qty" type="number" min="1" value="1" required></label>
+      <label>kVA Rating<input id="kva" type="number" min="1" required></label>
+      <label>UPS Type<select id="upsType" required></select></label>
+      <label>Inspection Given By<select id="engineer"></select></label>
+      <label>Planned Inspection Date<input id="plannedDate" type="date"></label>
+      <label>Revised Date 1<input id="rev1" type="date"></label>
+      <label>Revised Date 2<input id="rev2" type="date"></label>
+      <label>Revised Date 3<input id="rev3" type="date"></label>
+      <label>Revised Date 4<input id="rev4" type="date"></label>
+      <label>Revised Date 5<input id="rev5" type="date"></label>
+      <label>Actual Inspection Date<input id="actualDate" type="date"></label>
+      <label>Status<select id="status">
+        <option>Planned</option><option>Completed</option><option>Delayed</option><option>Cancelled</option><option>Waiver</option>
+      </select></label>
+      <label>Issue Type<select id="issueType"></select></label>
+      <label class="span2">Issue at the Time<textarea id="issueAtTime"></textarea></label>
+      <label class="span2">Remarks<textarea id="remarks"></textarea></label>
     </div>
-    <div class="header-actions">
-      <select id="monthPicker"></select>
-      <button id="btnAdmin" class="ghost">Admin</button>
-      <button id="btnAdd" class="primary">+ Add New Entry</button>
+    <div class="dialog-actions">
+      <button value="cancel" class="ghost">Cancel</button>
+      <button type="button" id="btnSaveEntry" class="primary">Save Entry</button>
     </div>
-  </header>
+  </form>
+</dialog>
 
-  <main>
-    <section class="kpis">
-      <div class="kpi blue"><span>Total UPS Manufactured</span><b id="kpiManufactured">0</b></div>
-      <div class="kpi cyan"><span>Offered for Inspection</span><b id="kpiOffered">0</b></div>
-      <div class="kpi green"><span>Completed</span><b id="kpiCompleted">0</b></div>
-      <div class="kpi amber"><span>Delayed</span><b id="kpiDelayed">0</b></div>
-      <div class="kpi red"><span>Cancelled</span><b id="kpiCancelled">0</b></div>
-      <div class="kpi purple"><span>Waiver</span><b id="kpiWaiver">0</b></div>
+<dialog id="adminDialog" class="admin-dialog">
+  <div class="dialog-head"><div><h2>Admin Settings</h2><p>Manage monthly production and master data.</p></div><button class="x" id="closeAdmin">×</button></div>
+  <div class="admin-grid">
+    <section class="admin-card">
+      <div class="admin-card-head"><h3>Monthly Production</h3><span>Manufactured Qty</span></div>
+      <p>Enter total UPS produced for each month. Dashboard compares this with offered inspection quantity.</p>
+      <div id="productionRows"></div>
+      <button id="saveProduction" class="primary">Save Production</button>
     </section>
-
-    <section class="charts">
-      <div class="panel">
-        <div class="panel-title">Inspection by Product Type (This Month)</div>
-        <canvas id="productChart"></canvas>
-      </div>
-      <div class="panel wide">
-        <div class="panel-title">Monthly Manufacturing vs Offered for Inspection</div>
-        <canvas id="monthlyChart"></canvas>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Issue Type (This Month)</div>
-        <canvas id="issueChart"></canvas>
-      </div>
+    <section class="admin-card">
+      <div class="admin-card-head"><h3>Authorized Engineers</h3><span>Team</span></div>
+      <div class="inline"><input id="newEngineer" placeholder="Engineer name"><button id="addEngineer">Add</button></div>
+      <div id="engineerList"></div>
     </section>
-
-    <section class="filters">
-      <select id="filterType"><option value="">All UPS Types</option></select>
-      <select id="filterStatus">
-        <option value="">All Status</option>
-        <option>Completed</option><option>Delayed</option><option>Cancelled</option><option>Waiver</option><option>Planned</option>
-      </select>
-      <select id="filterIssue"><option value="">All Issue Types</option></select>
-      <input id="searchBox" placeholder="Search customer, project, serial, engineer, issue..." />
-      <button id="btnReset" class="ghost">Reset</button>
-      <button id="btnExport" class="green-btn">Export Excel</button>
+    <section class="admin-card">
+      <div class="admin-card-head"><h3>UPS Type Master</h3><span>Dropdown</span></div>
+      <div class="inline"><input id="newUpsType" placeholder="UPS type"><button id="addUpsType">Add</button></div>
+      <div id="upsTypeList"></div>
     </section>
-
-    <section class="table-wrap">
-      <table id="inspectionTable">
-        <thead>
-          <tr>
-            <th>#</th><th>Customer / Project</th><th>Qty</th><th>kVA</th><th>Type</th>
-            <th>Inspection Given By</th><th>Planned Date</th>
-            <th>Revised 1</th><th>Revised 2</th><th>Revised 3</th><th>Revised 4</th><th>Revised 5</th>
-            <th>Actual Inspection Date</th><th>Days / Delay</th><th>Status</th>
-            <th>Issue Type</th><th>Issue at the Time</th><th>Remarks</th><th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="inspectionBody"></tbody>
-      </table>
+    <section class="admin-card">
+      <div class="admin-card-head"><h3>Issue Type Master</h3><span>Dropdown</span></div>
+      <div class="inline"><input id="newIssueType" placeholder="Issue type"><button id="addIssueType">Add</button></div>
+      <div id="issueTypeList"></div>
     </section>
+    <section class="admin-card span2">
+      <div class="admin-card-head"><h3>Excel History Upload</h3><span>Import .xlsx</span></div>
+      <p>Upload the existing Inspection Schedule workbook to bring historical monthly data into the portal.</p>
+      <div class="upload-line"><input id="historyFile" type="file" accept=".xlsx"><button id="importHistory" class="green-btn">Import History</button></div>
+      <div id="importStatus"></div>
+    </section>
+    <section class="admin-card span2 online-card">
+      <div class="admin-card-head"><h3>Supabase Online Connection</h3><span>Realtime</span></div>
+      <p>Paste the Supabase Project URL and anon key once. After reload, all users will work on the same live cloud data.</p>
+      <label>Supabase URL<input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></label>
+      <label>Supabase Anon Key<textarea id="supabaseKey" rows="3"></textarea></label>
+      <button id="saveCloudConfig" class="primary">Save & Reload Online</button>
+      <p class="mini">Once live, GitHub Pages is only the front-end. Supabase stores and syncs the data.</p>
+    </section>
+  </div>
+</dialog>
 
-    <div class="foot-note" id="modeNote"></div>
-  </main>
-
-  <dialog id="entryDialog">
-    <form method="dialog" id="entryForm">
-      <div class="dialog-head"><h2 id="entryTitle">Add Inspection Entry</h2><button value="cancel" class="x">×</button></div>
-      <input type="hidden" id="entryId">
-      <div class="form-grid">
-        <label>Customer / Project<input id="customer" required></label>
-        <label>Qty<input id="qty" type="number" min="1" value="1" required></label>
-        <label>kVA Rating<input id="kva" type="number" min="1" required></label>
-        <label>UPS Type<select id="upsType" required></select></label>
-        <label>Inspection Given By<select id="engineer"></select></label>
-        <label>Planned Inspection Date<input id="plannedDate" type="date"></label>
-        <label>Revised Date 1<input id="rev1" type="date"></label>
-        <label>Revised Date 2<input id="rev2" type="date"></label>
-        <label>Revised Date 3<input id="rev3" type="date"></label>
-        <label>Revised Date 4<input id="rev4" type="date"></label>
-        <label>Revised Date 5<input id="rev5" type="date"></label>
-        <label>Actual Inspection Date<input id="actualDate" type="date"></label>
-        <label>Status<select id="status">
-          <option>Planned</option><option>Completed</option><option>Delayed</option><option>Cancelled</option><option>Waiver</option>
-        </select></label>
-        <label>Issue Type<select id="issueType"></select></label>
-        <label class="span2">Issue at the Time<textarea id="issueAtTime"></textarea></label>
-        <label class="span2">Remarks<textarea id="remarks"></textarea></label>
-      </div>
-      <div class="dialog-actions">
-        <button value="cancel" class="ghost">Cancel</button>
-        <button type="button" id="btnSaveEntry" class="primary">Save Entry</button>
-      </div>
-    </form>
-  </dialog>
-
-  <dialog id="adminDialog">
-    <div class="dialog-head"><h2>Admin Settings</h2><button class="x" id="closeAdmin">×</button></div>
-    <div class="admin-grid">
-      <section class="admin-card">
-        <h3>Monthly Production</h3>
-        <p>Enter total UPS manufactured for each month.</p>
-        <div id="productionRows"></div>
-        <button id="saveProduction" class="primary">Save Production</button>
-      </section>
-      <section class="admin-card">
-        <h3>Authorized Engineers</h3>
-        <div class="inline"><input id="newEngineer" placeholder="Engineer name"><button id="addEngineer">Add</button></div>
-        <div id="engineerList"></div>
-      </section>
-      <section class="admin-card">
-        <h3>UPS Type Master</h3>
-        <div class="inline"><input id="newUpsType" placeholder="UPS type"><button id="addUpsType">Add</button></div>
-        <div id="upsTypeList"></div>
-      </section>
-      <section class="admin-card">
-        <h3>Issue Type Master</h3>
-        <div class="inline"><input id="newIssueType" placeholder="Issue type"><button id="addIssueType">Add</button></div>
-        <div id="issueTypeList"></div>
-      </section>
-      <section class="admin-card span2">
-        <h3>Excel History Upload</h3>
-        <p>Upload your existing <b>Inspection Schedule 2026.xlsx</b>. The importer reads month sheets and brings the historical entries into the portal.</p>
-        <input id="historyFile" type="file" accept=".xlsx">
-        <button id="importHistory" class="green-btn">Import History</button>
-        <div id="importStatus"></div>
-      </section>
-      <section class="admin-card span2">
-        <h3>Online Connection</h3>
-        <p>Paste Supabase project details once. After deployment, every engineer sees the same live data from anywhere.</p>
-        <label>Supabase URL<input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></label>
-        <label>Supabase Anon Key<textarea id="supabaseKey" rows="3"></textarea></label>
-        <button id="saveCloudConfig" class="primary">Save & Reload</button>
-        <p class="mini">Without these values the portal runs in local demo mode on this browser only.</p>
-      </section>
-    </div>
-  </dialog>
-
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

@@ -56,6 +56,7 @@ async function init(){
   render();
   bind();
   $("modeNote").textContent = online ? "LIVE ONLINE MODE • Supabase realtime connected" : "LOCAL DEMO MODE • Add Supabase details in Admin to make it multi-user and always online";
+  $("sideMode").textContent = online ? "Live Online" : "Local Demo";
 }
 
 function buildMonthPicker(){
@@ -90,6 +91,8 @@ function bind(){
   $("filterType").onchange=renderTable; $("filterStatus").onchange=renderTable; $("filterIssue").onchange=renderTable; $("searchBox").oninput=renderTable;
   $("btnReset").onclick=()=>{$("filterType").value="";$("filterStatus").value="";$("filterIssue").value="";$("searchBox").value="";renderTable()};
   $("btnAdd").onclick=()=>openEntry();
+  $("btnAdd2").onclick=()=>openEntry();
+  $("sideAdmin").onclick=()=>{$("adminDialog").showModal();renderAdmin()};
   $("btnSaveEntry").onclick=saveEntry;
   $("btnAdmin").onclick=()=>{$("adminDialog").showModal();renderAdmin()};
   $("closeAdmin").onclick=()=>$("adminDialog").close();

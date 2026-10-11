@@ -1,53 +1,37 @@
-MONTHLY INSPECTION TRACKING PORTAL
-===================================
+MONTHLY INSPECTION TRACKING PORTAL V2
+======================================
 
-What is included
-----------------
-- Working responsive inspection dashboard
-- Monthly KPIs:
-  Total UPS Manufactured / Offered for Inspection / Completed / Delayed / Cancelled / Waiver
-- Monthly graph: Manufactured vs Offered for Inspection
-- Inspection-by-product-type chart
-- Issue-type summary
-- Editable inspection register with:
-  Customer/Project, Qty, kVA, UPS Type, Engineer, Planned Date,
-  Revised Date 1-5, Actual Date, Status, Issue Type, Issue at the Time, Remarks
-- Admin masters:
-  Authorized Engineers, UPS Types, Issue Types
-- Monthly Total UPS Manufactured input
-- Existing Excel history import
-- Excel export
-- Local demo mode
-- Supabase realtime online mode
+This is the polished GitHub-ready version.
 
-QUICK TEST
-----------
-Open index.html in Chrome/Edge.
-It works immediately in LOCAL DEMO MODE using browser storage.
+WHAT CHANGED
+------------
+- Dark neon dashboard styling closer to the approved mockup
+- Left navigation sidebar
+- Stronger KPI cards
+- Cleaner chart cards and white data table
+- Better Admin screen
+- Same functional data logic as V1
+- GitHub Pages compatible
+- Supabase realtime ready
+- Local demo fallback retained until Supabase is connected
 
-MAKE IT ALWAYS ONLINE / MULTI-USER
-----------------------------------
-1. Create a new Supabase project.
-2. In Supabase -> SQL Editor, paste and run `supabase.sql`.
-3. In Supabase -> Project Settings -> API, copy:
-   - Project URL
-   - anon/public key
-4. Open the portal -> Admin -> Online Connection.
-5. Paste URL + anon key -> Save & Reload.
-6. Test that the footer says LIVE ONLINE MODE.
-7. Deploy the whole folder to Netlify:
-   - login to Netlify
-   - Add new site -> Deploy manually
-   - drag the `inspection_portal` folder or the ZIP
-8. Share the Netlify URL with the team.
+HOW TO MAKE IT ONLINE
+---------------------
+1. Create a Supabase project.
+2. Run supabase.sql in Supabase SQL Editor.
+3. Copy Project URL and anon key.
+4. Open the portal -> Admin -> Supabase Online Connection.
+5. Paste both values -> Save & Reload Online.
+6. Confirm bottom message says LIVE ONLINE MODE.
+7. Upload/replace these files in your GitHub repository:
+   index.html
+   styles.css
+   app.js
+   config.js
+   supabase.sql
+8. Enable GitHub Pages from main / root.
 
-REALTIME
---------
-When the Supabase connection is configured, inspection changes made by one user
-are stored in the cloud and the other users refresh automatically.
-
-IMPORTANT SECURITY NOTE
------------------------
-The supplied SQL uses a deliberately simple team policy: the anon key can read/write.
-This keeps setup easy for a trusted internal team. For a public internet URL, add proper
-Supabase Auth and restrictive RLS before sharing outside the organization.
+IMPORTANT
+---------
+The supplied SQL uses a simple internal-team policy where the anon key can read/write.
+Use it only for an internal/trusted team URL. Proper Supabase Auth can be added later.
