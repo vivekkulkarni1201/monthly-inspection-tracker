@@ -1,46 +1,42 @@
-MONTHLY INSPECTION TRACKING PORTAL V3
-======================================
+MONTHLY INSPECTION TRACKING PORTAL V4 - MODULAR PATCH
+=====================================================
 
-This version fixes the Supabase "Invalid API key" startup problem and improves the UI.
+WHY THIS PATCH
+--------------
+1. Mobile was showing LOCAL MODE because the Supabase settings were previously stored in browser localStorage.
+2. This V4 stores ONLY the safe Supabase Project URL + Publishable Key in config.js.
+   Therefore GitHub Pages connects automatically on every mobile/laptop.
+3. The app is split into separate HTML pages like your QR projects:
+   - index.html      = Dashboard
+   - register.html   = Monthly inspection register
+   - admin.html      = Admin / masters
+   Future changes to one page are easier and do not require changing the whole portal.
+4. KPI cards are smaller and cleaner.
+5. Product, monthly and issue graphs are redesigned/polished.
+6. Issue chart has a clean empty state when there are no issues.
 
-IMPORTANT SUPABASE FIX
-----------------------
-In Admin -> Supabase Online Connection:
-- Project URL can be pasted as either:
-  https://xxxx.supabase.co
-  OR
-  SUPABASE_URL=https://xxxx.supabase.co
-- Publishable key can be pasted as either:
-  sb_publishable_...
-  OR
-  SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+UPLOAD / REPLACE THESE FILES ON GITHUB
+--------------------------------------
+index.html
+register.html
+admin.html
+styles.css
+config.js
+core.js
+dashboard.js
+register.js
+admin.js
 
-The portal automatically strips the variable name and spaces.
+You may leave supabase.sql in the repository unchanged.
 
-DO NOT paste SUPABASE_SECRET_KEY.
+IMPORTANT
+---------
+config.js contains ONLY the browser-safe Publishable key. Never put a Supabase secret key in GitHub.
 
-IF THE OLD VERSION SAVED A BAD KEY
-----------------------------------
-Open Admin -> Supabase Online Connection -> Clear Saved Key.
-Then paste the Project URL and Publishable key again.
-Use Test Connection before Save & Reload Online.
-
-GITHUB UPDATE
--------------
-Replace these files in the GitHub repository:
-- index.html
-- styles.css
-- app.js
-- config.js
-- supabase.sql
-
-Keep all files in repository root.
-
-AESTHETIC CHANGES
------------------
-- Smaller KPI cards
-- Integrated Vertiv-style header logo/wordmark
-- Cleaner dark neon dashboard
-- Better spacing and compact tables
-- Redesigned horizontal Issue Type chart
-- Connection status indicator and non-blocking error banner
+AFTER UPLOAD
+------------
+1. Wait about 1 minute for GitHub Pages.
+2. Hard refresh desktop: Ctrl+F5.
+3. On mobile, close/reopen the page or clear site cache once.
+4. Dashboard left bottom should show "Live Online".
+5. Open register.html on mobile and add/edit a test row.

@@ -1,4 +1,4 @@
 window.APP_CONFIG = {
-  SUPABASE_URL: localStorage.getItem("inspection_supabase_url") || "",
-  SUPABASE_PUBLISHABLE_KEY: localStorage.getItem("inspection_supabase_key") || ""
+  SUPABASE_URL: "https://yhbmrasnwnljjlsjarhc.supabase.co",
+  SUPABASE_PUBLISHABLE_KEY: "sb_publishable_ueps31JfxHn8dEwARydAxQ_jG3kg5Da"
 };
