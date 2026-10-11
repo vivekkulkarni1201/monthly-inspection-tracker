@@ -975,3 +975,36 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
   .history-issue-row input[data-hi-remarks]{grid-column:1 / span 3}
   .history-banner-metrics{grid-template-columns:1fr 1fr}
 }
+
+
+/* =========================================================
+   V12 MONTHLY GRAPH PATCH
+   Whole year visible without scrolling + nested bar styling
+   ========================================================= */
+.trend-card{min-height:336px}
+.trend-card .card-head{padding-bottom:8px}
+.trend-card .pill{background:linear-gradient(180deg,#113456,#0c2742);border:1px solid rgba(67,130,178,.42);color:#cfe3f4}
+.trend-card canvas{height:270px!important}
+.trend-viewport{
+  width:100%;
+  height:276px;
+  overflow:visible !important;
+  overflow-x:visible !important;
+  overflow-y:visible !important;
+  scrollbar-width:none;
+}
+.trend-viewport::-webkit-scrollbar{display:none}
+.trend-inner{
+  width:100%;
+  min-width:0 !important;
+  height:270px;
+}
+.trend-inner canvas{
+  width:100% !important;
+  height:270px !important;
+}
+@media(max-width:720px){
+  .trend-card{min-height:300px}
+  .trend-card canvas,.trend-inner canvas{height:236px!important}
+  .trend-viewport,.trend-inner{height:236px}
+}

@@ -66,15 +66,105 @@ function drawMonthly(selectedMonth){
   const offered=keys.map(k=>monthSnapshot(k).offered);
   monthlyChart?.destroy();
   const ctx=$("monthlyChart").getContext("2d");
-  const offeredGradient=ctx.createLinearGradient(0,0,0,240);offeredGradient.addColorStop(0,"rgba(30,187,255,1)");offeredGradient.addColorStop(.6,"rgba(18,128,255,.88)");offeredGradient.addColorStop(1,"rgba(18,92,225,.58)");
-  const madeGradient=ctx.createLinearGradient(0,0,0,240);madeGradient.addColorStop(0,"rgba(206,224,239,.62)");madeGradient.addColorStop(1,"rgba(116,145,172,.20)");
+
+  const madeGradient=ctx.createLinearGradient(0,0,0,260);
+  madeGradient.addColorStop(0,"rgba(235,244,255,.82)");
+  madeGradient.addColorStop(.35,"rgba(181,200,220,.64)");
+  madeGradient.addColorStop(1,"rgba(119,143,165,.30)");
+
+  const offeredGradient=ctx.createLinearGradient(0,0,0,260);
+  offeredGradient.addColorStop(0,"rgba(46,205,255,1)");
+  offeredGradient.addColorStop(.42,"rgba(31,170,255,.94)");
+  offeredGradient.addColorStop(1,"rgba(18,123,237,.82)");
+
   monthlyChart=new Chart($("monthlyChart"),{
     type:"bar",
-    data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[
-      {label:"Total UPS Manufactured",data:manufactured,backgroundColor:madeGradient,borderColor:"rgba(207,229,247,.75)",borderWidth:1,borderRadius:8,barPercentage:.82,categoryPercentage:.76,order:2},
-      {label:"Offered for Inspection",data:offered,backgroundColor:offeredGradient,borderColor:"rgba(116,214,255,.96)",borderWidth:1,borderRadius:8,barPercentage:.46,categoryPercentage:.76,order:1}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",align:"end",labels:{color:"#dceaf6",usePointStyle:true,boxWidth:10,padding:15,font:{size:10}}}},scales:{x:{grid:{display:false},ticks:{color:"#cfe0ed",autoSkip:false,maxRotation:0,minRotation:0,font:{size:10}}},y:{beginAtZero:true,grid:{color:"rgba(86,129,161,.16)"},ticks:{color:"#91abc0",precision:0}}}}
+    data:{
+      labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+      datasets:[
+        {
+          label:"Total UPS Manufactured",
+          data:manufactured,
+          grouped:false,
+          backgroundColor:madeGradient,
+          borderColor:"rgba(235,244,255,.85)",
+          borderWidth:1.4,
+          borderRadius:12,
+          borderSkipped:false,
+          barPercentage:.68,
+          categoryPercentage:.82,
+          order:1
+        },
+        {
+          label:"Offered for Inspection",
+          data:offered,
+          grouped:false,
+          backgroundColor:offeredGradient,
+          borderColor:"rgba(108,229,255,.98)",
+          borderWidth:1,
+          borderRadius:10,
+          borderSkipped:false,
+          barPercentage:.40,
+          categoryPercentage:.82,
+          order:2
+        }
+      ]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      layout:{padding:{left:6,right:10,top:2,bottom:2}},
+      plugins:{
+        legend:{
+          position:"top",
+          align:"end",
+          labels:{
+            color:"#dceaf6",
+            usePointStyle:true,
+            pointStyle:"circle",
+            boxWidth:10,
+            boxHeight:10,
+            padding:18,
+            font:{size:10,weight:"700"}
+          }
+        },
+        tooltip:{
+          backgroundColor:"rgba(6,20,33,.96)",
+          titleColor:"#fff",
+          bodyColor:"#dceaf6",
+          borderColor:"rgba(61,129,176,.8)",
+          borderWidth:1,
+          padding:10
+        }
+      },
+      scales:{
+        x:{
+          offset:true,
+          grid:{display:true,color:"rgba(53,107,148,.14)",drawTicks:false},
+          ticks:{
+            color:"#d7e7f3",
+            autoSkip:false,
+            maxRotation:0,
+            minRotation:0,
+            padding:8,
+            font:{size:11,weight:"700"}
+          },
+          border:{color:"rgba(98,145,179,.35)"}
+        },
+        y:{
+          beginAtZero:true,
+          grace:"10%",
+          grid:{color:"rgba(53,107,148,.22)",drawTicks:false},
+          ticks:{
+            color:"#9cb8cd",
+            padding:10,
+            precision:0,
+            font:{size:10,weight:"600"}
+          },
+          border:{color:"rgba(98,145,179,.35)"}
+        }
+      }
+    }
   });
   const pill=document.querySelector(".trend-card .pill");if(pill)pill.textContent=`Jan–Dec ${year}`;
 }
