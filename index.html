@@ -1,68 +1,143 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Monthly Inspection Tracking</title>
-<link rel="stylesheet" href="styles.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-</head><body><div id="toast"></div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Monthly Inspection Tracking</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="toast"></div>
+
 <div class="app">
-<aside class="sidebar">
-  <div class="brand"><div class="vertiv-logo"><i></i></div><div class="brand-copy"><strong>VERTIV</strong><small>Inspection Portal</small></div></div>
-  <nav>
-    <a class="nav" data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
-    <a class="nav" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
-    <a class="nav" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
-  </nav>
-  <div class="live-card"><i id="liveDot" class="live-dot"></i><div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div></div>
-</aside>
+  <aside class="sidebar">
+    <div class="brand brand-integrated">
+      <div class="vertiv-logo"><i></i></div>
+      <div class="brand-copy"><strong>VERTIV</strong><small>Inspection Portal</small></div>
+    </div>
 
-<section class="page">
-<header class="topbar">
-  <div><h1>Monthly Inspection Tracking</h1><p>Factory Acceptance, Inspection & Report Status</p></div>
-  <div class="top-actions">
-    <div class="monthbox">📅 <select id="monthPicker"></select></div>
-    <a class="btn btn-ghost" href="admin.html">⚙ Admin</a>
-    <a class="btn btn-primary" href="register.html?action=add">＋ Add New Entry</a>
-  </div>
-</header>
+    <nav>
+      <a class="nav active" data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
+      <a class="nav" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
+      <a class="nav" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
+    </nav>
 
-<main>
-<section class="kpi-grid">
-  <article class="kpi kpi-blue"><div class="kpi-icon">🏭</div><div><label>Total UPS<br>Manufactured</label><strong id="kpiManufactured">0</strong></div></article>
-  <article class="kpi kpi-cyan"><div class="kpi-icon">📋</div><div><label>Offered for<br>Inspection</label><strong id="kpiOffered">0</strong></div></article>
-  <article class="kpi kpi-green"><div class="kpi-icon">✓</div><div><label>Completed</label><strong id="kpiCompleted">0</strong></div></article>
-  <article class="kpi kpi-amber"><div class="kpi-icon">◷</div><div><label>Delayed</label><strong id="kpiDelayed">0</strong></div></article>
-  <article class="kpi kpi-red"><div class="kpi-icon">✕</div><div><label>Cancelled</label><strong id="kpiCancelled">0</strong></div></article>
-  <article class="kpi kpi-purple"><div class="kpi-icon">▣</div><div><label>Waiver</label><strong id="kpiWaiver">0</strong></div></article>
-</section>
+    <div class="live-card">
+      <i id="liveDot" class="live-dot"></i>
+      <div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div>
+    </div>
+  </aside>
 
-<section class="dashboard-grid">
-  <article class="card chart-card">
-    <div class="card-head"><div><h3>Inspection by Product Type</h3><p>This month</p></div><span class="pill" id="productTotal">0 offered</span></div>
-    <canvas id="productChart"></canvas>
-  </article>
+  <section class="page">
+    <header class="topbar">
+      <div class="top-title">
+        <h1>Monthly Inspection Tracking</h1>
+        <p>Factory Acceptance, Inspection & Report Status</p>
+      </div>
 
-  <article class="card chart-card">
-    <div class="card-head"><div><h3>Monthly Inspection Trend</h3><p>Manufactured quantity with offered inspection inside it</p></div></div>
-    <canvas id="monthlyChart"></canvas>
-  </article>
+      <div class="top-actions">
+        <div class="custom-month" id="monthControl">
+          <button id="monthButton" class="month-button" type="button">📅 <span>October 2026</span> <b>⌄</b></button>
+          <div id="monthMenu" class="month-menu"></div>
+          <select id="monthPicker" class="sr-only"></select>
+        </div>
+        <a class="btn btn-ghost" href="admin.html">⚙ Admin</a>
+        <a class="btn btn-primary" href="register.html?action=add">＋ Add New Entry</a>
+      </div>
+    </header>
 
-  <article class="card chart-card">
-    <div class="card-head"><div><h3>Issue Type Summary</h3><p>This month</p></div><span class="pill" id="issueTotal">0 issues</span></div>
-    <div id="issueEmpty" class="empty-state"><div><b>No issues recorded</b><span>Add issue type while updating inspection.</span></div></div>
-    <div id="issueCanvasWrap" class="issue-wrap" style="display:none"><canvas id="issueChart"></canvas></div>
-  </article>
-</section>
+    <main>
+      <section class="kpi-grid kpi-neon">
+        <article class="kpi kpi-blue">
+          <div class="kpi-icon factory-icon"><span></span></div>
+          <div><label>Total UPS Manufactured</label><strong id="kpiManufactured">0</strong></div>
+        </article>
+        <article class="kpi kpi-cyan">
+          <div class="kpi-icon clipboard-icon"><span></span></div>
+          <div><label>Offered for Inspection</label><strong id="kpiOffered">0</strong></div>
+        </article>
+        <article class="kpi kpi-green">
+          <div class="kpi-icon check-icon">✓</div>
+          <div><label>Completed</label><strong id="kpiCompleted">0</strong></div>
+        </article>
+        <article class="kpi kpi-amber">
+          <div class="kpi-icon clock-icon">◷</div>
+          <div><label>Delayed</label><strong id="kpiDelayed">0</strong></div>
+        </article>
+        <article class="kpi kpi-red">
+          <div class="kpi-icon cancel-icon">✕</div>
+          <div><label>Cancelled</label><strong id="kpiCancelled">0</strong></div>
+        </article>
+        <article class="kpi kpi-purple">
+          <div class="kpi-icon waiver-icon">▣</div>
+          <div><label>Waiver</label><strong id="kpiWaiver">0</strong></div>
+        </article>
+      </section>
 
-<section class="summary-strip">
-  <div class="summary-box"><small>Not Yet Offered</small><b id="sumPending">0</b></div>
-  <div class="summary-box"><small>Offer Coverage</small><b id="sumCoverage">0%</b></div>
-  <div class="summary-box"><small>Inspection Issues</small><b id="sumIssues">0</b></div>
-  <div class="summary-box"><small>Selected Month</small><b id="sumMonth">-</b></div>
-</section>
+      <section class="dashboard-grid dashboard-grid-v5">
+        <article class="card chart-card donut-card">
+          <div class="card-head">
+            <div><h3>Inspection by Product Type</h3><p>Quantity and share for selected month</p></div>
+            <span class="pill" id="productTotal">0 offered</span>
+          </div>
+          <div class="donut-layout">
+            <div class="donut-canvas"><canvas id="productChart"></canvas><div class="donut-center"><b id="productCenter">0</b><span>Offered</span></div></div>
+            <div id="productLegend" class="smart-legend"></div>
+          </div>
+        </article>
 
-<div id="modeNote" class="mode-note"></div>
-</main>
-</section></div>
-<script src="config.js"></script><script src="core.js"></script><script src="dashboard.js"></script>
-</body></html>
+        <article class="card chart-card trend-card">
+          <div class="card-head">
+            <div><h3>Monthly Inspection Trend</h3><p>Total UPS manufactured vs offered for inspection</p></div>
+            <span class="pill">Jan–Dec 2026</span>
+          </div>
+          <canvas id="monthlyChart"></canvas>
+        </article>
+
+        <article class="card chart-card donut-card">
+          <div class="card-head">
+            <div><h3>Issue Type Summary</h3><p>Issue quantity and percentage</p></div>
+            <span class="pill" id="issueTotal">0 issues</span>
+          </div>
+          <div id="issueEmpty" class="empty-state"><div><b>No issues recorded</b><span>Issue breakup will appear here.</span></div></div>
+          <div id="issueDonutLayout" class="donut-layout" style="display:none">
+            <div class="donut-canvas"><canvas id="issueChart"></canvas><div class="donut-center"><b id="issueCenter">0</b><span>Issues</span></div></div>
+            <div id="issueLegend" class="smart-legend"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="table-card dashboard-table">
+        <div class="table-head">
+          <div><h3>Monthly Inspection Register</h3><p>Live records for the selected month.</p></div>
+          <div class="table-head-actions">
+            <a class="btn btn-ghost btn-sm" href="register.html">Open Full Register</a>
+            <a class="btn btn-primary btn-sm" href="register.html?action=add">＋ Add Entry</a>
+          </div>
+        </div>
+        <div class="table-wrap dashboard-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>Customer / Project</th><th>Qty</th><th>kVA</th><th>Type</th><th>Inspection Given By</th>
+                <th>Planned Date</th><th>Actual Inspection Date</th><th>Days / Delay</th><th>Status</th>
+                <th>Issue Type</th><th>Issue at the Time</th><th>Remarks</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div id="modeNote" class="mode-note"></div>
+    </main>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script src="core.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

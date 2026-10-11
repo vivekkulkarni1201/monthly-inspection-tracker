@@ -1,42 +1,54 @@
-MONTHLY INSPECTION TRACKING PORTAL V4 - MODULAR PATCH
-=====================================================
+MONTHLY INSPECTION TRACKING PORTAL V5
+======================================
 
-WHY THIS PATCH
---------------
-1. Mobile was showing LOCAL MODE because the Supabase settings were previously stored in browser localStorage.
-2. This V4 stores ONLY the safe Supabase Project URL + Publishable Key in config.js.
-   Therefore GitHub Pages connects automatically on every mobile/laptop.
-3. The app is split into separate HTML pages like your QR projects:
-   - index.html      = Dashboard
-   - register.html   = Monthly inspection register
-   - admin.html      = Admin / masters
-   Future changes to one page are easier and do not require changing the whole portal.
-4. KPI cards are smaller and cleaner.
-5. Product, monthly and issue graphs are redesigned/polished.
-6. Issue chart has a clean empty state when there are no issues.
+V5 changes
+----------
+1. Fixed ugly/native month dropdown on dashboard with a custom dark month picker.
+2. Removed the lower summary strip.
+3. Brought the Monthly Inspection Register back onto the main dashboard.
+4. KPI cards are more compact, brighter and fully neon-polished.
+5. Vertiv branding remains integrated into the sidebar design rather than looking pasted-on.
+6. Monthly graph now forces ALL 12 month labels to stay visible.
+7. Product Type chart is now a premium donut with:
+   - Qty
+   - Percentage
+   - Total in center
+   - Clean legend
+8. Issue Type Summary is now a premium donut with:
+   - Qty
+   - Percentage
+   - Total in center
+   - Clean legend
+   - Proper empty state when no issues exist
+9. Dashboard table supports direct edit links into register.html.
+10. Modular structure remains:
+   index.html      Dashboard
+   register.html   Full monthly register
+   admin.html      Admin / master data
 
-UPLOAD / REPLACE THESE FILES ON GITHUB
---------------------------------------
+UPLOAD / REPLACE ON GITHUB
+--------------------------
 index.html
-register.html
-admin.html
 styles.css
-config.js
-core.js
 dashboard.js
 register.js
+
+The existing V4 files below can remain as they are:
+config.js
+core.js
+register.html
+admin.html
 admin.js
 
-You may leave supabase.sql in the repository unchanged.
+If you prefer, uploading the full V5 ZIP contents is also safe.
 
-IMPORTANT
----------
-config.js contains ONLY the browser-safe Publishable key. Never put a Supabase secret key in GitHub.
+AFTER GITHUB UPLOAD
+-------------------
+1. Wait around 1 minute.
+2. Desktop: Ctrl + F5.
+3. Mobile: close browser tab and reopen the GitHub Pages URL once.
+4. Live Online should remain automatic because config.js already contains the browser-safe Supabase publishable key.
 
-AFTER UPLOAD
-------------
-1. Wait about 1 minute for GitHub Pages.
-2. Hard refresh desktop: Ctrl+F5.
-3. On mobile, close/reopen the page or clear site cache once.
-4. Dashboard left bottom should show "Live Online".
-5. Open register.html on mobile and add/edit a test row.
+SECURITY
+--------
+Only the Supabase publishable key is used in config.js. Never add a Supabase secret key to GitHub.

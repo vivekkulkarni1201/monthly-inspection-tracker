@@ -3,7 +3,12 @@ async function bootRegister(){
   navLink("register");buildMonthPicker();
   try{await initCloud();subscribe("inspections",()=>{renderTable()});fillMasters();wire();renderTable();$("modeNote").textContent="LIVE ONLINE • Register updates are stored in Supabase."}
   catch(e){console.error(e);updateLiveBadge();$("modeNote").textContent="Cloud connection failed: "+e.message}
-  if(new URLSearchParams(location.search).get("action")==="add")setTimeout(()=>openEntry(),200)
+  const params=new URLSearchParams(location.search);
+  if(params.get("action")==="add")setTimeout(()=>openEntry(),200);
+  if(params.get("edit"))setTimeout(()=>{
+    const r=inspections.find(x=>String(x.id)===String(params.get("edit")));
+    if(r)openEntry(r);
+  },220)
 }
 function wire(){
   $("monthPicker").onchange=renderTable;$("filterType").onchange=renderTable;$("filterStatus").onchange=renderTable;$("filterIssue").onchange=renderTable;$("searchBox").oninput=renderTable;
