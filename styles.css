@@ -500,3 +500,94 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
     grid-template-columns:1fr;
   }
 }
+
+
+/* =========================
+   V8 ICON FIX
+   More relevant integrated symbols for first two KPI cards
+   ========================= */
+
+/* Total UPS Manufactured = production/factory line */
+.kpi-v6 .symbol-factory{
+  width:30px;
+  height:28px;
+  color:#82d1ff;
+}
+.kpi-v6 .symbol-factory::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  bottom:3px;
+  width:25px;
+  height:13px;
+  border:2px solid currentColor;
+  border-top:none;
+  border-radius:2px;
+  box-shadow:0 0 10px rgba(78,190,255,.35);
+}
+.kpi-v6 .symbol-factory::after{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:4px;
+  width:5px;
+  height:12px;
+  background:currentColor;
+  box-shadow:
+    7px 4px 0 currentColor,
+    14px 1px 0 currentColor,
+    21px 6px 0 -1px currentColor;
+  filter:drop-shadow(0 0 7px currentColor);
+}
+
+/* Offered for Inspection = checklist + inspection lens */
+.kpi-v6 .symbol-offered{
+  width:30px;
+  height:30px;
+  color:#73fff5;
+}
+.kpi-v6 .symbol-offered::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:2px;
+  width:18px;
+  height:23px;
+  border:2px solid currentColor;
+  border-radius:3px;
+  box-shadow:0 0 10px rgba(62,255,240,.25);
+}
+.kpi-v6 .symbol-offered::after{
+  content:"";
+  position:absolute;
+  right:0;
+  bottom:1px;
+  width:10px;
+  height:10px;
+  border:2px solid currentColor;
+  border-radius:50%;
+  box-shadow:
+    -10px -10px 0 -4px currentColor,
+    -10px -4px 0 -4px currentColor;
+  filter:drop-shadow(0 0 7px currentColor);
+}
+.kpi-v6 .symbol-offered{
+  --handle: currentColor;
+}
+.kpi-v6 .symbol-offered > span{display:none}
+.kpi-v6 .kpi-cyan .kpi-symbol{
+  overflow:visible;
+}
+.kpi-v6 .kpi-cyan .kpi-symbol{
+  position:absolute;
+}
+.kpi-v6 .kpi-cyan .kpi-symbol:has(*){}
+.kpi-v6 .kpi-cyan .kpi-symbol::marker{display:none}
+
+/* lens handle */
+.kpi-v6 .kpi-cyan .kpi-symbol{
+  background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;
+  background-size:8px 2px;
+  background-position:25px 25px;
+}
