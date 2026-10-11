@@ -326,3 +326,177 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
 
 @media(max-width:1450px){.kpi-v6 .kpi-copy small{display:none}.kpi-v6 .kpi-copy label{font-size:10px}.kpi-symbol{width:38px;height:38px;min-width:38px}}
 @media(max-width:720px){.kpi-v6 .kpi{height:70px;min-height:70px;padding:8px 9px}.kpi-v6 .kpi-copy label{font-size:9.5px;white-space:normal;line-height:1.1}.kpi-v6 .kpi-copy strong{font-size:24px}.kpi-symbol{width:34px;height:34px;min-width:34px;border-radius:9px;font-size:19px}.trend-inner{min-width:640px}.brand-v6{display:none}}
+
+
+/* =========================
+   V7 UI FIX PATCH
+   - integrated KPI icon feel
+   - donut legend overlap fix
+   ========================= */
+
+/* Make KPI symbols feel built into card rather than pasted in a separate tile */
+.kpi-v6 .kpi{
+  position:relative;
+  padding-left:56px;
+}
+.kpi-v6 .kpi-symbol{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:26px;
+  height:26px;
+  min-width:26px;
+  border-radius:0;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  display:block;
+  opacity:.96;
+}
+.kpi-v6 .kpi-symbol::before,
+.kpi-v6 .kpi-symbol::after{
+  filter:drop-shadow(0 0 8px currentColor);
+}
+.kpi-v6 .kpi-symbol:after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.10) 0%, rgba(255,255,255,.02) 48%, transparent 72%);
+  z-index:-1;
+}
+.kpi-v6 .symbol-check,
+.kpi-v6 .symbol-clock,
+.kpi-v6 .symbol-cancel,
+.kpi-v6 .symbol-waiver{
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  font-weight:800;
+  line-height:1;
+}
+.kpi-v6 .symbol-waiver{
+  font-size:18px;
+  letter-spacing:.4px;
+}
+.kpi-v6 .kpi-copy label{
+  white-space:normal;
+  line-height:1.1;
+}
+.kpi-v6 .kpi-copy small{
+  opacity:.95;
+}
+.kpi-v6 .kpi-blue .kpi-symbol{color:#81cfff}
+.kpi-v6 .kpi-cyan .kpi-symbol{color:#78fff6}
+.kpi-v6 .kpi-green .kpi-symbol{color:#7bf5b4}
+.kpi-v6 .kpi-amber .kpi-symbol{color:#ffd875}
+.kpi-v6 .kpi-red .kpi-symbol{color:#ff8ea0}
+.kpi-v6 .kpi-purple .kpi-symbol{color:#dfacff}
+
+/* Product and issue cards: place legend below donut to avoid any overlap */
+.donut-card{
+  min-height:300px;
+}
+.donut-layout{
+  grid-template-columns:1fr !important;
+  height:auto !important;
+  align-items:start;
+  justify-items:center;
+  gap:10px;
+  padding-top:8px;
+}
+.donut-canvas{
+  height:190px;
+  width:100%;
+}
+.donut-canvas canvas{
+  width:170px !important;
+  height:170px !important;
+}
+.donut-canvas:before{
+  width:132px;
+  height:132px;
+}
+.donut-center b{
+  font-size:22px;
+}
+.donut-center span{
+  font-size:9px;
+}
+.smart-legend{
+  width:100%;
+  max-height:none;
+  overflow:visible;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding-top:2px;
+}
+.legend-chip{
+  min-width:0;
+  display:grid;
+  grid-template-columns:10px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  column-gap:8px;
+  row-gap:2px;
+  align-items:center;
+  padding:8px 9px;
+  border-radius:10px;
+  background:linear-gradient(180deg, rgba(20,50,78,.62), rgba(10,28,44,.46));
+  border:1px solid rgba(56,115,156,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+.legend-chip .legend-dot{
+  grid-row:1 / span 2;
+  align-self:center;
+}
+.legend-chip .legend-name{
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  color:#dce9f4;
+  font-size:11px;
+  line-height:1.1;
+}
+.legend-chip .legend-meta{
+  color:#9fb7ca;
+  font-size:10px;
+  line-height:1;
+}
+.legend-chip .legend-meta b{
+  color:#ffffff;
+  font-size:12px;
+  margin-right:6px;
+}
+.legend-chip .legend-meta em{
+  font-style:normal;
+  color:#8ec1e3;
+}
+@media(max-width:1100px){
+  .smart-legend{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:720px){
+  .kpi-v6 .kpi{
+    padding-left:50px;
+  }
+  .kpi-v6 .kpi-symbol{
+    left:12px;
+    width:23px;
+    height:23px;
+  }
+  .kpi-v6 .symbol-check,
+  .kpi-v6 .symbol-clock,
+  .kpi-v6 .symbol-cancel{
+    font-size:21px;
+  }
+  .kpi-v6 .symbol-waiver{
+    font-size:16px;
+  }
+  .smart-legend{
+    grid-template-columns:1fr;
+  }
+}

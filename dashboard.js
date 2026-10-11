@@ -71,11 +71,10 @@ function renderLegend(el,entries,total,colors){
   if(!entries.length){el.innerHTML="";return}
   el.innerHTML=entries.map(([name,val],i)=>{
     const pct=total?Math.round(val/total*100):0;
-    return `<div class="legend-row">
+    return `<div class="legend-chip">
       <span class="legend-dot" style="--dot:${colors[i%colors.length]}"></span>
-      <span class="legend-name">${name}</span>
-      <b>${val}</b>
-      <em>${pct}%</em>
+      <span class="legend-name" title="${name}">${name}</span>
+      <span class="legend-meta"><b>${val}</b> <em>${pct}%</em></span>
     </div>`;
   }).join("");
 }
