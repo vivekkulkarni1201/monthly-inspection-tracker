@@ -4,19 +4,9 @@
 </head><body><div id="toast"></div>
 <div class="app">
 <aside class="sidebar">
-  <div class="brand brand-panel">
-      <div class="brand-lockup">
-        <div class="brand-mark-wrap" aria-hidden="true">
-          <svg class="brand-mark" viewBox="0 0 100 100" role="img" aria-label="Vertiv mark">
-            <circle cx="50" cy="50" r="43" fill="rgba(255,255,255,0.98)"/>
-            <path d="M22 34h18l10 17 10-17h18L58 66H42L22 34Z" fill="#ef5a24"/>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <strong>VERTIV</strong>
-          <small>Keep it Humming</small>
-        </div>
-      </div>
+  <div class="brand brand-reference">
+      <div class="brand-reference-art" aria-label="Vertiv"></div>
+      <div class="brand-reference-tagline">Keep it Humming</div>
     </div>
 
     <nav>
@@ -32,6 +22,88 @@
 <section class="admin-card"><div class="admin-title"><h3>Authorized Engineers</h3><span>Team</span></div><div class="inline"><input id="newEngineer" placeholder="Engineer name"><button id="addEngineer" class="btn btn-primary">Add</button></div><div id="engineerList"></div></section>
 <section class="admin-card"><div class="admin-title"><h3>UPS Type Master</h3><span>Dropdown</span></div><div class="inline"><input id="newUpsType" placeholder="UPS type"><button id="addUpsType" class="btn btn-primary">Add</button></div><div id="upsTypeList"></div></section>
 <section class="admin-card"><div class="admin-title"><h3>Issue Type Master</h3><span>Dropdown</span></div><div class="inline"><input id="newIssueType" placeholder="Issue type"><button id="addIssueType" class="btn btn-primary">Add</button></div><div id="issueTypeList"></div></section>
+
+<section class="admin-card span2 history-card">
+  <div class="admin-title">
+    <h3>Historical Back Entry</h3>
+    <span>2024–2026</span>
+  </div>
+  <p>Use this for old months where you only need the consolidated inspection numbers, UPS type breakup and issue history.</p>
+
+  <div class="history-form-grid">
+    <label>Month
+      <input id="historyMonth" type="month" min="2024-01" max="2026-12" value="2026-09">
+    </label>
+    <label>Planned Inspections
+      <input id="histPlanned" type="number" min="0" value="0">
+    </label>
+    <label>Completed Inspections
+      <input id="histCompletedInspections" type="number" min="0" value="0">
+    </label>
+    <label>Total UPS Offered
+      <input id="histUpsOffered" type="number" min="0" value="0">
+    </label>
+    <label>UPS Inspected / Completed
+      <input id="histUpsCompleted" type="number" min="0" value="0">
+    </label>
+    <label>Total UPS Manufactured
+      <input id="histManufactured" type="number" min="0" value="0">
+    </label>
+    <label>Delayed UPS
+      <input id="histDelayed" type="number" min="0" value="0">
+    </label>
+    <label>Cancelled UPS
+      <input id="histCancelled" type="number" min="0" value="0">
+    </label>
+    <label>Waiver UPS
+      <input id="histWaiver" type="number" min="0" value="0">
+    </label>
+    <label class="span2">Monthly Remarks
+      <textarea id="histRemarks" rows="2" placeholder="Optional monthly summary / important note"></textarea>
+    </label>
+  </div>
+
+  <div class="history-subhead">
+    <div>
+      <h4>UPS Type Breakdown</h4>
+      <p>Enter only quantity against applicable types.</p>
+    </div>
+  </div>
+  <div id="historyProductRows" class="history-product-grid"></div>
+
+  <div class="history-subhead">
+    <div>
+      <h4>Issues Faced</h4>
+      <p>Useful especially for previous 2026 months.</p>
+    </div>
+    <button id="addHistoryIssue" class="btn btn-ghost btn-sm" type="button">＋ Add Issue</button>
+  </div>
+  <div id="historyIssueRows" class="history-issue-list"></div>
+
+  <div class="history-actions">
+    <button id="loadHistory" class="btn btn-ghost" type="button">Load Month</button>
+    <button id="saveHistory" class="btn btn-primary" type="button">Save Historical Month</button>
+  </div>
+  <div id="historyStatus" class="helper"></div>
+</section>
+
+<section class="admin-card span2">
+  <div class="admin-title">
+    <h3>Saved Historical Months</h3>
+    <span>Quick Edit</span>
+  </div>
+  <div class="history-list-wrap">
+    <table class="history-list-table">
+      <thead>
+        <tr>
+          <th>Month</th><th>Planned</th><th>Completed</th><th>UPS Offered</th><th>UPS Inspected</th><th>Manufactured</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="historyListBody"></tbody>
+    </table>
+  </div>
+</section>
+
 <section class="admin-card span2 cloud-card"><div class="admin-title"><h3>Cloud Status</h3><span>Supabase</span></div><p>This V4 patch stores the safe Project URL + Publishable Key in <b>config.js</b>, so mobile and desktop automatically connect to the same database. No per-device setup required.</p><div id="cloudStatus" class="helper"></div><p class="warn">Secret key is never used in the browser.</p></section>
 </div><div id="modeNote" class="mode-note"></div></main></section></div>
 <script src="config.js"></script><script src="core.js"></script><script src="admin.js"></script>

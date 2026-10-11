@@ -1,6 +1,6 @@
 
 async function bootRegister(){
-  navLink("register");buildMonthPicker();
+  navLink("register");buildMonthPicker();initPrettyMonthPicker(renderTable);
   try{await initCloud();subscribe("inspections",()=>{renderTable()});fillMasters();wire();renderTable();$("modeNote").textContent="LIVE ONLINE • Register updates are stored in Supabase."}
   catch(e){console.error(e);updateLiveBadge();$("modeNote").textContent="Cloud connection failed: "+e.message}
   const params=new URLSearchParams(location.search);
