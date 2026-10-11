@@ -743,3 +743,99 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
   .kpi-v9 .kpi-copy label{font-size:9.3px}
   .kpi-v9 .kpi-copy strong{font-size:24px}
 }
+
+
+/* ==========================================================
+   V10 EMBEDDED ORANGE VERTIV BRAND PANEL
+   - no external image dependency
+   - fully integrated, not pasted
+   ========================================================== */
+
+.brand-panel{
+  margin:0 0 16px;
+  padding:14px 12px 15px;
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 24% 28%, rgba(255,119,43,.52), transparent 26%),
+    radial-gradient(circle at 36% 42%, rgba(255,92,0,.22), transparent 30%),
+    linear-gradient(135deg, rgba(67,22,6,.96), rgba(17,13,15,.93) 42%, rgba(7,18,29,.98) 100%);
+  border:1px solid rgba(255,119,43,.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    inset 0 -1px 0 rgba(255,130,52,.08),
+    0 14px 28px rgba(0,0,0,.32),
+    0 0 30px rgba(255,102,22,.12);
+}
+.brand-panel:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(110deg, rgba(255,255,255,.07), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,.05), transparent 24%);
+  pointer-events:none;
+}
+.brand-panel:after{
+  content:"";
+  position:absolute;
+  left:14px; right:14px; bottom:0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,129,53,.95), transparent);
+  box-shadow:0 0 14px rgba(255,106,24,.55);
+}
+
+.brand-lockup{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:66px;
+}
+.brand-mark-wrap{
+  width:54px;
+  height:54px;
+  min-width:54px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.16), rgba(255,255,255,.03) 58%, transparent 72%);
+  box-shadow:0 0 18px rgba(255,111,35,.14);
+}
+.brand-mark{
+  width:48px;
+  height:48px;
+  filter:drop-shadow(0 0 10px rgba(255,112,30,.35));
+}
+.brand-text{
+  min-width:0;
+}
+.brand-text strong{
+  display:block;
+  color:#ffffff;
+  font-size:19px;
+  line-height:1;
+  letter-spacing:1.3px;
+  font-weight:900;
+  text-shadow:0 0 18px rgba(255,120,40,.16);
+}
+.brand-text small{
+  display:block;
+  margin-top:7px;
+  color:#f3cdbd;
+  font-size:11px;
+  letter-spacing:.35px;
+  line-height:1.1;
+  text-shadow:0 0 14px rgba(255,117,35,.12);
+}
+
+/* make sure older brand variants do not interfere */
+.brand-orange,.brand-v6,.brand-integrated{display:none !important}
+
+@media(max-width:720px){
+  .brand-panel{
+    display:none;
+  }
+}
