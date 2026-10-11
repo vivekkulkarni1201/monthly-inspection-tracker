@@ -70,7 +70,7 @@ function renderHistoryIssueRows(){
 }
 window.removeHistoryIssue=i=>{historyIssueDraft.splice(i,1);renderHistoryIssueRows()};
 function clearHistoryFields(){
-  ["histPlanned","histCompletedInspections","histUpsOffered","histUpsCompleted","histManufactured","histDelayed","histCancelled","histWaiver"].forEach(id=>$(id).value=0);
+  ["histPlanned","histCompletedInspections","histUpsOffered","histManufactured","histDelayed","histCancelled","histWaiver"].forEach(id=>$(id).value=0);
   $("histRemarks").value="";
 }
 function loadHistoryMonth(month){
@@ -81,7 +81,6 @@ function loadHistoryMonth(month){
     $("histPlanned").value=+h.planned_inspections||0;
     $("histCompletedInspections").value=+h.completed_inspections||0;
     $("histUpsOffered").value=+h.ups_offered||0;
-    $("histUpsCompleted").value=+h.ups_completed||0;
     $("histManufactured").value=+h.manufactured_qty||0;
     $("histDelayed").value=+h.delayed_qty||0;
     $("histCancelled").value=+h.cancelled_qty||0;
@@ -100,7 +99,7 @@ async function saveHistoryMonth(){
     planned_inspections:+$("histPlanned").value||0,
     completed_inspections:+$("histCompletedInspections").value||0,
     ups_offered:+$("histUpsOffered").value||0,
-    ups_completed:+$("histUpsCompleted").value||0,
+    ups_completed:+$("histCompletedInspections").value||0,
     manufactured_qty:+$("histManufactured").value||0,
     delayed_qty:+$("histDelayed").value||0,
     cancelled_qty:+$("histCancelled").value||0,
@@ -128,9 +127,9 @@ async function saveHistoryMonth(){
 function renderHistoryList(){
   const rows=[...historySummaries].sort((a,b)=>b.month.localeCompare(a.month));
   $("historyListBody").innerHTML=rows.length?rows.map(h=>`<tr>
-    <td>${fmtMonthKey(h.month)}</td><td>${h.planned_inspections||0}</td><td>${h.completed_inspections||0}</td><td>${h.ups_offered||0}</td><td>${h.ups_completed||0}</td><td>${h.manufactured_qty||0}</td>
+    <td>${fmtMonthKey(h.month)}</td><td>${h.planned_inspections||0}</td><td>${h.completed_inspections||0}</td><td>${h.ups_offered||0}</td><td>${h.manufactured_qty||0}</td>
     <td><button class="mini-action-btn" onclick="editHistory('${h.month}')">Edit</button><button class="mini-delete-btn" onclick="deleteHistory('${h.month}')">Delete</button></td>
-  </tr>`).join(""):`<tr><td colspan="7" style="text-align:center;padding:18px">No historical months saved yet.</td></tr>`;
+  </tr>`).join(""):`<tr><td colspan="6" style="text-align:center;padding:18px">No historical months saved yet.</td></tr>`;
 }
 window.editHistory=month=>{$("historyMonth").value=month;loadHistoryMonth(month);$("historyMonth").scrollIntoView({behavior:"smooth",block:"center"})};
 window.deleteHistory=async month=>{

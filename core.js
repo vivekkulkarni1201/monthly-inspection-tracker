@@ -4,7 +4,7 @@ const MONTHS=["January","February","March","April","May","June","July","August",
 const YEARS=[2024,2025,2026];
 
 let db=null,online=false;
-let inspections=[],upsTypes=[],issueTypes=[],engineers=[],production={};
+let inspections=[],upsTypes=[],issueTypes=[],engineers=[],production={},inspectionIssues=[];
 let historySummaries=[],historyProducts=[],historyIssues=[];
 
 function toast(msg,bad=false){
@@ -99,10 +99,11 @@ async function loadAll(){
   engineers=(d.data||[]).map(x=>x.name);
   production=Object.fromEntries((e.data||[]).map(x=>[x.month,+x.manufactured_qty||0]));
 
-  [historySummaries,historyProducts,historyIssues]=await Promise.all([
+  [historySummaries,historyProducts,historyIssues,inspectionIssues]=await Promise.all([
     optionalTable("monthly_history","month"),
     optionalTable("monthly_history_products","month"),
-    optionalTable("monthly_history_issues","month")
+    optionalTable("monthly_history_issues","month"),
+    optionalTable("inspection_issues","id")
   ]);
 }
 function updateLiveBadge(){
@@ -120,7 +121,11 @@ function subscribe(table,callback){
 function rowsForMonth(m){return inspections.filter(r=>monthKey(r.planned_date||r.actual_date)===m)}
 function currentRows(){return rowsForMonth(currentMonthKey())}
 function qtySum(rows){return rows.reduce((s,r)=>s+(+r.qty||0),0)}
-function statusQty(rows,status){return rows.filter(r=>r.status===status).reduce((s,r)=>s+(+r.qty||0),0)}
+function statusCount(rows,status){
+  // KPI status is CUSTOMER / INSPECTION count, not UPS quantity.
+  // One inspection row with Qty=66 and Status=Completed counts as 1 Completed.
+  return rows.filter(r=>r.status===status).length;
+}
 function historyForMonth(m){return historySummaries.find(x=>x.month===m)||null}
 function monthSnapshot(m){
   const rows=rowsForMonth(m),hist=historyForMonth(m);
@@ -132,10 +137,10 @@ function monthSnapshot(m){
       completed_inspections:rows.filter(r=>["Completed","Delayed"].includes(r.status)).length,
       manufactured:+production[m]||+(hist?.manufactured_qty||0),
       offered:qtySum(rows),
-      completed:statusQty(rows,"Completed"),
-      delayed:statusQty(rows,"Delayed"),
-      cancelled:statusQty(rows,"Cancelled"),
-      waiver:statusQty(rows,"Waiver")
+      completed:statusCount(rows,"Completed"),
+      delayed:statusCount(rows,"Delayed"),
+      cancelled:statusCount(rows,"Cancelled"),
+      waiver:statusCount(rows,"Waiver")
     };
   }
   if(hist){
@@ -146,7 +151,7 @@ function monthSnapshot(m){
       completed_inspections:+hist.completed_inspections||0,
       manufactured:+hist.manufactured_qty||0,
       offered:+hist.ups_offered||0,
-      completed:+hist.ups_completed||0,
+      completed:+hist.completed_inspections||0,
       delayed:+hist.delayed_qty||0,
       cancelled:+hist.cancelled_qty||0,
       waiver:+hist.waiver_qty||0
@@ -161,12 +166,40 @@ function productBreakdown(m){
   }
   const map={};historyProducts.filter(x=>x.month===m).forEach(x=>map[x.ups_type]=(map[x.ups_type]||0)+(+x.qty||0));return map;
 }
+function issuesForInspection(inspectionId){
+  return inspectionIssues.filter(x=>String(x.inspection_id)===String(inspectionId));
+}
 function issueBreakdown(m){
   const rows=rowsForMonth(m);
   if(rows.length){
-    const map={};rows.filter(r=>r.issue_type).forEach(r=>map[r.issue_type]=(map[r.issue_type]||0)+(+r.qty||0));return map;
+    const rowIds=new Set(rows.map(r=>String(r.id)));
+    const map={};
+    let foundNew=false;
+
+    inspectionIssues
+      .filter(x=>rowIds.has(String(x.inspection_id)) && x.issue_type)
+      .forEach(x=>{
+        foundNew=true;
+        const key=String(x.issue_type).trim();
+        map[key]=(map[key]||0)+Math.max(1,+x.occurrence_count||1);
+      });
+
+    if(foundNew)return map;
+
+    // Legacy fallback before migration patch is run:
+    // one inspection row = one issue incident, never multiply by UPS qty.
+    rows.filter(r=>r.issue_type && String(r.issue_type).trim()).forEach(r=>{
+      const key=String(r.issue_type).trim();
+      map[key]=(map[key]||0)+1;
+    });
+    return map;
   }
-  const map={};historyIssues.filter(x=>x.month===m).forEach(x=>map[x.issue_type]=(map[x.issue_type]||0)+(+x.qty||0));return map;
+
+  const map={};
+  historyIssues
+    .filter(x=>x.month===m && x.issue_type)
+    .forEach(x=>map[x.issue_type]=(map[x.issue_type]||0)+(+x.qty||0));
+  return map;
 }
 function fillMasterSelect(id,arr,allLabel){
   const el=$(id);if(!el)return;

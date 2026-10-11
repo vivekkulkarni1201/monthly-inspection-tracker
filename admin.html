@@ -34,28 +34,25 @@
     <label>Month
       <input id="historyMonth" type="month" min="2024-01" max="2026-12" value="2026-09">
     </label>
-    <label>Planned Inspections
+    <label>Planned Customers / Inspections
       <input id="histPlanned" type="number" min="0" value="0">
     </label>
-    <label>Completed Inspections
+    <label>Completed Customers / Inspections
       <input id="histCompletedInspections" type="number" min="0" value="0">
     </label>
     <label>Total UPS Offered
       <input id="histUpsOffered" type="number" min="0" value="0">
     </label>
-    <label>UPS Inspected / Completed
-      <input id="histUpsCompleted" type="number" min="0" value="0">
-    </label>
     <label>Total UPS Manufactured
       <input id="histManufactured" type="number" min="0" value="0">
     </label>
-    <label>Delayed UPS
+    <label>Delayed Customers / Inspections
       <input id="histDelayed" type="number" min="0" value="0">
     </label>
-    <label>Cancelled UPS
+    <label>Cancelled Customers / Inspections
       <input id="histCancelled" type="number" min="0" value="0">
     </label>
-    <label>Waiver UPS
+    <label>Waiver Customers / Inspections
       <input id="histWaiver" type="number" min="0" value="0">
     </label>
     <label class="span2">Monthly Remarks
@@ -96,7 +93,7 @@
     <table class="history-list-table">
       <thead>
         <tr>
-          <th>Month</th><th>Planned</th><th>Completed</th><th>UPS Offered</th><th>UPS Inspected</th><th>Manufactured</th><th>Actions</th>
+          <th>Month</th><th>Planned Customers</th><th>Completed Customers</th><th>UPS Offered</th><th>Manufactured</th><th>Actions</th>
         </tr>
       </thead>
       <tbody id="historyListBody"></tbody>

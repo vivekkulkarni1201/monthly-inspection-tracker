@@ -40,10 +40,10 @@ function renderHistoryBanner(snap){
   el.classList.remove("hidden");
   el.innerHTML=`<div class="history-banner-title"><b>${fmtMonthKey(snap.month)} Historical Summary</b><span>Aggregate back-entry</span></div>
     <div class="history-banner-metrics">
-      <div><small>Planned Inspections</small><strong>${snap.planned_inspections}</strong></div>
-      <div><small>Completed Inspections</small><strong>${snap.completed_inspections}</strong></div>
+      <div><small>Planned Customers</small><strong>${snap.planned_inspections}</strong></div>
+      <div><small>Completed Customers</small><strong>${snap.completed}</strong></div>
       <div><small>UPS Offered</small><strong>${snap.offered}</strong></div>
-      <div><small>UPS Inspected</small><strong>${snap.completed}</strong></div>
+      <div><small>Total Manufactured</small><strong>${snap.manufactured}</strong></div>
     </div>`;
 }
 function renderLegend(el,entries,total,colors){
@@ -170,7 +170,7 @@ function drawMonthly(selectedMonth){
 }
 function drawIssues(m){
   const map=issueBreakdown(m),arr=Object.entries(map).sort((a,b)=>b[1]-a[1]),total=arr.reduce((a,x)=>a+x[1],0);
-  $("issueTotal").textContent=total+" issues";$("issueCenter").textContent=total;
+  $("issueTotal").textContent=total+" issue"+(total===1?"":"s");$("issueCenter").textContent=total;
   if(!arr.length){$("issueEmpty").style.display="grid";$("issueDonutLayout").style.display="none";issueChart?.destroy();return}
   $("issueEmpty").style.display="none";$("issueDonutLayout").style.display="grid";renderLegend($("issueLegend"),arr,total,ISSUE_COLORS);
   issueChart?.destroy();
