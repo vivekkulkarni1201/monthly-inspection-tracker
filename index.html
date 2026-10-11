@@ -13,9 +13,9 @@
 
 <div class="app">
   <aside class="sidebar">
-    <div class="brand brand-v6">
-      <div class="brand-emblem" aria-hidden="true"><i></i></div>
-      <div class="brand-copy"><strong>VERTIV</strong><small>INSPECTION CONTROL</small></div>
+    <div class="brand brand-orange">
+      <div class="orange-brand-art" aria-hidden="true"></div>
+      <div class="orange-tagline">Keep it Humming</div>
     </div>
 
     <nav>
@@ -49,13 +49,69 @@
     </header>
 
     <main>
-      <section class="kpi-grid kpi-v6">
-        <article class="kpi kpi-blue"><div class="kpi-glow"></div><div class="kpi-symbol symbol-factory"></div><div class="kpi-copy"><label>Total UPS Manufactured</label><strong id="kpiManufactured">0</strong><small>Monthly production</small></div></article>
-        <article class="kpi kpi-cyan"><div class="kpi-glow"></div><div class="kpi-symbol symbol-offered"></div><div class="kpi-copy"><label>Offered for Inspection</label><strong id="kpiOffered">0</strong><small>Inspection quantity</small></div></article>
-        <article class="kpi kpi-green"><div class="kpi-glow"></div><div class="kpi-symbol symbol-check">✓</div><div class="kpi-copy"><label>Completed</label><strong id="kpiCompleted">0</strong><small>Inspection complete</small></div></article>
-        <article class="kpi kpi-amber"><div class="kpi-glow"></div><div class="kpi-symbol symbol-clock">◷</div><div class="kpi-copy"><label>Delayed</label><strong id="kpiDelayed">0</strong><small>Behind schedule</small></div></article>
-        <article class="kpi kpi-red"><div class="kpi-glow"></div><div class="kpi-symbol symbol-cancel">×</div><div class="kpi-copy"><label>Cancelled</label><strong id="kpiCancelled">0</strong><small>Inspection cancelled</small></div></article>
-        <article class="kpi kpi-purple"><div class="kpi-glow"></div><div class="kpi-symbol symbol-waiver">W</div><div class="kpi-copy"><label>Waiver</label><strong id="kpiWaiver">0</strong><small>Inspection waived</small></div></article>
+      <section class="kpi-grid kpi-v9">
+        <article class="kpi kpi-blue">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M10 51V27h9v8l10-8v8l11-8v24H10Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/>
+            <path d="M16 51v-8h7v8M31 42h5M42 42h5M31 49h5M42 49h5M47 27V14h7v37" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Total UPS Manufactured</label><strong id="kpiManufactured">0</strong><small>Monthly production</small></div>
+        </article>
+
+        <article class="kpi kpi-cyan">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <rect x="14" y="14" width="31" height="39" rx="4" fill="none" stroke="currentColor" stroke-width="3.2"/>
+            <path d="M23 14v-4h14v4M22 27h15M22 35h12M22 43h9" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="45" cy="43" r="10" fill="none" stroke="currentColor" stroke-width="3.2"/>
+            <path d="m40 43 3 3 6-7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Offered for Inspection</label><strong id="kpiOffered">0</strong><small>Inspection quantity</small></div>
+        </article>
+
+        <article class="kpi kpi-green">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="3.2"/>
+            <path d="m22 32 7 7 14-16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Completed</label><strong id="kpiCompleted">0</strong><small>Inspection complete</small></div>
+        </article>
+
+        <article class="kpi kpi-amber">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="3.2"/>
+            <path d="M32 20v13l9 5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Delayed</label><strong id="kpiDelayed">0</strong><small>Behind schedule</small></div>
+        </article>
+
+        <article class="kpi kpi-red">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="3.2"/>
+            <path d="m24 24 16 16M40 24 24 40" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Cancelled</label><strong id="kpiCancelled">0</strong><small>Inspection cancelled</small></div>
+        </article>
+
+        <article class="kpi kpi-purple">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M18 12h28v40H18z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/>
+            <path d="M24 23h16M24 31h16M24 39h10" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="m37 42 4 4 8-9" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Waiver</label><strong id="kpiWaiver">0</strong><small>Inspection waived</small></div>
+        </article>
       </section>
 
       <section class="dashboard-grid dashboard-grid-v5">

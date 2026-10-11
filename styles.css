@@ -591,3 +591,155 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
   background-size:8px 2px;
   background-position:25px 25px;
 }
+
+
+/* =====================================================
+   V9 — ORANGE VERTIV BRANDING + INTEGRATED KPI ICONS
+   ===================================================== */
+
+.brand-orange{
+  margin:0 0 15px;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  position:relative;
+  min-height:112px;
+  overflow:hidden;
+  border-radius:0 0 16px 0;
+  background:
+    linear-gradient(135deg, rgba(38,10,4,.78), rgba(5,17,30,.30) 58%, transparent),
+    radial-gradient(circle at 34% 30%, rgba(255,99,0,.34), transparent 42%);
+  border-bottom:1px solid rgba(255,105,23,.34);
+  box-shadow:0 12px 30px rgba(0,0,0,.28), inset 0 -1px 0 rgba(255,132,50,.08);
+}
+.orange-brand-art{
+  width:100%;
+  height:82px;
+  background-image:url("assets/vertiv_orange.png");
+  background-size:190px auto;
+  background-position:center 44%;
+  background-repeat:no-repeat;
+  mix-blend-mode:screen;
+  filter:saturate(1.08) contrast(1.03);
+}
+.orange-tagline{
+  width:100%;
+  padding:0 16px 12px;
+  margin-top:-4px;
+  color:#f2d5c2;
+  font-size:12px;
+  letter-spacing:.45px;
+  text-align:center;
+  text-shadow:0 0 12px rgba(255,111,24,.32);
+}
+.brand-orange:after{
+  content:"";
+  position:absolute;
+  left:14px;right:14px;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,#ff711f,transparent);
+  box-shadow:0 0 12px rgba(255,113,31,.5);
+}
+
+.kpi-v9 .kpi{
+  min-height:90px;
+  height:90px;
+  padding:10px 13px;
+  gap:0;
+  display:grid;
+  grid-template-columns:62px 1px minmax(0,1fr);
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  border-width:1px;
+  isolation:isolate;
+}
+.kpi-v9 .kpi:before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    linear-gradient(112deg,rgba(255,255,255,.12),transparent 24%),
+    radial-gradient(circle at 18% 45%,currentColor 0%,transparent 38%);
+  opacity:.12;
+  pointer-events:none;
+}
+.kpi-v9 .kpi-aura{
+  position:absolute;
+  width:92px;height:92px;
+  left:-18px;top:-2px;
+  border-radius:50%;
+  background:radial-gradient(circle,currentColor 0%,rgba(255,255,255,.02) 38%,transparent 70%);
+  filter:blur(17px);
+  opacity:.23;
+  pointer-events:none;
+}
+.kpi-v9 .kpi-svg{
+  width:43px;height:43px;
+  justify-self:center;
+  color:currentColor;
+  filter:drop-shadow(0 0 7px currentColor);
+  position:relative;z-index:2;
+}
+.kpi-v9 .kpi-divider{
+  width:1px;height:52px;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.19),transparent);
+  position:relative;z-index:2;
+}
+.kpi-v9 .kpi-copy{
+  padding-left:14px;
+  position:relative;z-index:2;
+}
+.kpi-v9 .kpi-copy label{
+  display:block;
+  color:#eef7ff;
+  font-size:11px;
+  font-weight:800;
+  line-height:1.12;
+  white-space:normal;
+}
+.kpi-v9 .kpi-copy strong{
+  display:block;
+  margin-top:3px;
+  font-size:31px;
+  line-height:1;
+  letter-spacing:-.8px;
+  color:#fff;
+  text-shadow:0 0 13px rgba(255,255,255,.08);
+}
+.kpi-v9 .kpi-copy small{
+  display:block;
+  margin-top:4px;
+  color:#7f9db3;
+  font-size:8.5px;
+}
+.kpi-v9 .kpi-blue{color:#6ec7ff;box-shadow:0 0 24px rgba(20,150,255,.27),0 12px 24px #0007}
+.kpi-v9 .kpi-cyan{color:#52f5ea;box-shadow:0 0 24px rgba(24,220,208,.24),0 12px 24px #0007}
+.kpi-v9 .kpi-green{color:#65ed9f;box-shadow:0 0 24px rgba(43,212,127,.21),0 12px 24px #0007}
+.kpi-v9 .kpi-amber{color:#ffd067;box-shadow:0 0 24px rgba(255,179,29,.20),0 12px 24px #0007}
+.kpi-v9 .kpi-red{color:#ff7187;box-shadow:0 0 24px rgba(255,64,91,.21),0 12px 24px #0007}
+.kpi-v9 .kpi-purple{color:#cf8eff;box-shadow:0 0 24px rgba(180,94,255,.22),0 12px 24px #0007}
+
+/* make each card's icon glow part of the whole surface, not a separate tile */
+.kpi-v9 .kpi-blue{background:linear-gradient(135deg,#0c355f,#08233e 70%)}
+.kpi-v9 .kpi-cyan{background:linear-gradient(135deg,#093e44,#082831 70%)}
+.kpi-v9 .kpi-green{background:linear-gradient(135deg,#0c3d2b,#08281e 70%)}
+.kpi-v9 .kpi-amber{background:linear-gradient(135deg,#41300d,#2a210c 70%)}
+.kpi-v9 .kpi-red{background:linear-gradient(135deg,#41151f,#290e15 70%)}
+.kpi-v9 .kpi-purple{background:linear-gradient(135deg,#341449,#24102f 70%)}
+
+@media(max-width:1450px){
+  .kpi-v9 .kpi{grid-template-columns:54px 1px minmax(0,1fr);height:84px;min-height:84px}
+  .kpi-v9 .kpi-svg{width:37px;height:37px}
+  .kpi-v9 .kpi-copy{padding-left:11px}
+  .kpi-v9 .kpi-copy strong{font-size:28px}
+  .kpi-v9 .kpi-copy small{display:none}
+}
+@media(max-width:720px){
+  .brand-orange{display:none}
+  .kpi-v9 .kpi{grid-template-columns:44px 1px minmax(0,1fr);height:74px;min-height:74px;padding:7px 8px}
+  .kpi-v9 .kpi-svg{width:31px;height:31px}
+  .kpi-v9 .kpi-divider{height:40px}
+  .kpi-v9 .kpi-copy{padding-left:9px}
+  .kpi-v9 .kpi-copy label{font-size:9.3px}
+  .kpi-v9 .kpi-copy strong{font-size:24px}
+}
