@@ -1,6 +1,7 @@
 
 let productChart,monthlyChart,issueChart;
 const PRODUCT_COLORS=["#20a5ff","#22db8c","#ffb735","#b66cff","#ff607a","#38d7d4","#8fa6ff","#7dd35c"];
+const barValuePlugin={id:"barValuePlugin",afterDatasetsDraw(chart){const{ctx}=chart;ctx.save();ctx.textAlign="center";ctx.font="700 10px Segoe UI";chart.data.datasets.forEach((ds,di)=>{const meta=chart.getDatasetMeta(di);meta.data.forEach((bar,i)=>{const v=+ds.data[i]||0;if(!v)return;ctx.fillStyle=di===0?"#dfeaf4":"#62dcff";ctx.fillText(String(v),bar.x,Math.max(12,bar.y-5))})});ctx.restore()}};
 const ISSUE_COLORS=["#ff5069","#ff9f43","#ffc93c","#43b8ff","#ad68ff","#3bd5a2","#91a5b7","#ef6df0"];
 
 async function bootDashboard(){
@@ -34,7 +35,7 @@ function drawMonthly(selectedMonth){
   monthlyChart?.destroy();const ctx=$("monthlyChart").getContext("2d");
   const silver=ctx.createLinearGradient(0,0,0,270);silver.addColorStop(0,"rgba(235,244,255,.84)");silver.addColorStop(.35,"rgba(181,200,220,.66)");silver.addColorStop(1,"rgba(119,143,165,.30)");
   const blue=ctx.createLinearGradient(0,0,0,270);blue.addColorStop(0,"rgba(46,205,255,1)");blue.addColorStop(.45,"rgba(31,170,255,.94)");blue.addColorStop(1,"rgba(18,123,237,.82)");
-  monthlyChart=new Chart($("monthlyChart"),{type:"bar",data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[
+  monthlyChart=new Chart($("monthlyChart"),{type:"bar",plugins:[barValuePlugin],data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[
     {label:"Total UPS Manufactured",data:snaps.map(x=>x.manufactured),grouped:false,backgroundColor:silver,borderColor:"rgba(235,244,255,.85)",borderWidth:1.3,borderRadius:10,barPercentage:.68,categoryPercentage:.82,order:1},
     {label:"Offered for Inspection",data:snaps.map(x=>x.offered),grouped:false,backgroundColor:blue,borderColor:"rgba(108,229,255,.98)",borderWidth:1,borderRadius:9,barPercentage:.40,categoryPercentage:.82,order:2}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",align:"end",labels:{color:"#dceaf6",usePointStyle:true,pointStyle:"circle",padding:16,font:{size:10,weight:"700"}}}},scales:{x:{offset:true,grid:{color:"rgba(53,107,148,.12)"},ticks:{color:"#d7e7f3",autoSkip:false,maxRotation:0,minRotation:0,font:{size:10,weight:"700"}}},y:{beginAtZero:true,grid:{color:"rgba(53,107,148,.20)"},ticks:{color:"#9cb8cd",precision:0}}}}});
@@ -54,7 +55,7 @@ function renderDashboardTable(rows,snap){
   if(!rows.length&&snap.source==="history"){$("dashboardBody").innerHTML=`<tr><td colspan="16" style="text-align:center;padding:28px"><b>${fmtMonthKey(snap.month)}</b> is stored as consolidated historical data.</td></tr>`;return}
   $("dashboardBody").innerHTML=rows.length?rows.slice(0,16).map((r,i)=>{
     const k=eventKeyFor(r),rev=revisionsForEvent(k),latest=latestRevision(k),isu=issueSummary(k);
-    return `<tr><td>${i+1}</td><td>${r.customer_project||""}</td><td>${r.qty||1}</td><td>${r.kva_rating||""}</td><td>${r.ups_type||""}</td><td>${r.engineer||""}</td><td>${fmtDate(r.planned_date)}</td><td>${fmtDate(latest?.revised_date)}</td><td>${rev.length}</td><td>${fmtDate(r.actual_date)}</td><td>${eventDelayDays(k,[r])}</td><td><span class="status st-${r.status||"Planned"}">${r.status||"Planned"}</span></td><td>${isu.types}</td><td>${isu.details}</td><td>${r.remarks||"-"}</td><td><a class="mini-action" href="register.html?edit=${r.id}">✎</a></td></tr>`
+    return `<tr><td>${i+1}</td><td>${r.customer_project||""}</td><td>${r.qty||1}</td><td>${r.kva_rating||""}</td><td>${r.ups_type||""}</td><td>${engineerDisplay(r)}</td><td>${fmtDate(r.planned_date)}</td><td>${fmtDate(latest?.revised_date)}</td><td>${rev.length}</td><td>${fmtDate(r.actual_date)}</td><td>${eventDelayDays(k,[r])}</td><td><span class="status st-${r.status||"Planned"}">${r.status||"Planned"}</span></td><td>${isu.types}</td><td>${isu.details}</td><td>${r.remarks||"-"}</td><td><a class="mini-action" href="register.html?edit=${r.id}">✎</a></td></tr>`
   }).join(""):`<tr><td colspan="16" style="text-align:center;padding:28px">No records for this month.</td></tr>`
 }
 bootDashboard();

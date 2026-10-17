@@ -78,6 +78,7 @@ function subscribe(table,callback){
 }
 function navLink(active){document.querySelectorAll(".nav").forEach(a=>a.classList.remove("active"));document.querySelector(`[data-page="${active}"]`)?.classList.add("active")}
 function fillMasterSelect(id,arr,allLabel){const el=$(id);if(!el)return;el.innerHTML=(allLabel?`<option value="">${allLabel}</option>`:`<option value="">-</option>`)+arr.map(x=>`<option>${x}</option>`).join("")}
+function engineerDisplay(r){return [r?.engineer,r?.engineer_2].filter(Boolean).join(' + ')||'-'}
 
 function eventKeyFor(r){return r.event_key||`ROW-${r.id}`}
 function rowsForMonth(m){return inspections.filter(r=>(r.schedule_month||monthKey(r.planned_date||r.actual_date))===m)}
@@ -110,15 +111,30 @@ function historyForMonth(m){return historySummaries.find(x=>x.month===m)||null}
 function monthSnapshot(m){
   const rows=rowsForMonth(m),groups=groupEvents(rows),hist=historyForMonth(m);
   if(rows.length){
-    let completed=0,cancelled=0,waiver=0,delayed=0,revisions=0;
+    let completed=0,cancelled=0,waiver=0,delayed=0,revisions=0,inspections_with_issues=0,issue_incidents=0;
     groups.forEach(([k,rs])=>{
-      const outcome=groupOutcome(rs);if(outcome==="Completed")completed++;if(outcome==="Cancelled")cancelled++;if(outcome==="Waiver")waiver++;
-      if(eventIsDelayed(k,rs))delayed++;revisions+=revisionsForEvent(k).length;
+      const outcome=groupOutcome(rs);
+      if(outcome==="Completed")completed++;
+      if(outcome==="Cancelled")cancelled++;
+      if(outcome==="Waiver")waiver++;
+      if(eventIsDelayed(k,rs))delayed++;
+      revisions+=revisionsForEvent(k).length;
+      const ix=issuesForEvent(k);
+      if(ix.length){
+        inspections_with_issues++;
+        issue_incidents+=ix.reduce((s,x)=>s+Math.max(1,+x.occurrence_count||1),0);
+      }else if(rs.some(r=>r.issue_type)){
+        inspections_with_issues++;
+        issue_incidents++;
+      }
     });
-    return{source:"live",month:m,manufactured:+production[m]||+(hist?.manufactured_qty||0),offered:qtySum(rows),planned_inspections:groups.length,completed,delayed,cancelled,waiver,revisions}
+    return{source:"live",month:m,manufactured:+production[m]||+(hist?.manufactured_qty||0),offered:qtySum(rows),planned_inspections:groups.length,completed,delayed,cancelled,waiver,revisions,inspections_with_issues,issue_incidents}
   }
-  if(hist)return{source:"history",month:m,manufactured:+hist.manufactured_qty||0,offered:+hist.ups_offered||0,planned_inspections:+hist.planned_inspections||0,completed:+hist.completed_inspections||0,delayed:+hist.delayed_qty||0,cancelled:+hist.cancelled_qty||0,waiver:+hist.waiver_qty||0,revisions:+hist.revision_count||0};
-  return{source:"empty",month:m,manufactured:+production[m]||0,offered:0,planned_inspections:0,completed:0,delayed:0,cancelled:0,waiver:0,revisions:0}
+  if(hist){
+    const issueIncidents=historyIssues.filter(x=>x.month===m).reduce((s,x)=>s+(+x.qty||0),0);
+    return{source:"history",month:m,manufactured:+hist.manufactured_qty||0,offered:+hist.ups_offered||0,planned_inspections:+hist.planned_inspections||0,completed:+hist.completed_inspections||0,delayed:+hist.delayed_qty||0,cancelled:+hist.cancelled_qty||0,waiver:+hist.waiver_qty||0,revisions:+hist.revision_count||0,inspections_with_issues:+hist.inspections_with_issues||0,issue_incidents:issueIncidents};
+  }
+  return{source:"empty",month:m,manufactured:+production[m]||0,offered:0,planned_inspections:0,completed:0,delayed:0,cancelled:0,waiver:0,revisions:0,inspections_with_issues:0,issue_incidents:0}
 }
 function productBreakdown(m){
   const rows=rowsForMonth(m);if(rows.length){const map={};rows.forEach(r=>map[r.ups_type||"Unknown"]=(map[r.ups_type||"Unknown"]||0)+(+r.qty||0));return map}
@@ -134,7 +150,8 @@ function issueBreakdown(m){
   const map={};historyIssues.filter(x=>x.month===m&&x.issue_type).forEach(x=>map[x.issue_type]=(map[x.issue_type]||0)+(+x.qty||0));return map
 }
 function yearlySnapshots(year){return MONTHS.map((_,i)=>monthSnapshot(`${year}-${String(i+1).padStart(2,"0")}`))}
-function yearlyIssueTotal(year){return MONTHS.reduce((s,_,i)=>s+Object.values(issueBreakdown(`${year}-${String(i+1).padStart(2,"0")}`)).reduce((a,b)=>a+b,0),0)}
+function yearlyIssueTotal(year){return yearlySnapshots(year).reduce((s,x)=>s+(+x.issue_incidents||0),0)}
+function yearlyInspectionsWithIssues(year){return yearlySnapshots(year).reduce((s,x)=>s+(+x.inspections_with_issues||0),0)}
 
 function setupPWA(){
   if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});

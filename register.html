@@ -18,6 +18,7 @@
       <a class="nav " data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
       <a class="nav active" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
       <a class="nav " data-page="yearly" href="yearly.html"><span class="nicon">▥</span><span>Yearly Summary</span></a>
+      <a class="nav " data-page="reports" href="reports.html"><span class="nicon">⌕</span><span>Reports</span></a>
       <a class="nav " data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
     </nav>
   <div class="live-card"><i id="liveDot" class="live-dot"></i><div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div></div>
@@ -51,6 +52,7 @@
 <th>Latest Revised Date</th><th>Revision Count</th><th>Revision Reasons</th><th>Actual Inspection Date</th>
 <th>Days / Delay</th><th>Status</th><th>Issues</th><th>Issue Details</th><th>Remarks</th><th>Actions</th>
 </tr></thead><tbody id="inspectionBody"></tbody></table></div>
+<div id="mobileRegisterCards" class="mobile-register-cards"></div>
 </section>
 <div id="modeNote" class="mode-note"></div>
 </main></section></div>
@@ -60,7 +62,8 @@
 <input id="entryId" type="hidden"><input id="eventKey" type="hidden"><div class="form-grid">
 <label>Customer / Project<input id="customer"></label><label>SO No<input id="soNo"></label>
 <label>Qty<input id="qty" type="number" min="1" value="1"></label><label>kVA Rating<input id="kva" type="number" min="1"></label>
-<label>UPS Type<select id="upsType"></select></label><label>Inspection Given By<select id="engineer"></select></label>
+<label>UPS Type<select id="upsType"></select></label><label>Inspection Engineer 1<select id="engineer"></select></label>
+<label>Inspection Engineer 2<select id="engineer2"></select></label>
 <label>Planned Inspection Date<input id="plannedDate" type="date"></label><label>Actual Inspection Date<input id="actualDate" type="date"></label>
 <label>Status<select id="status"><option>Planned</option><option>Completed</option><option>Cancelled</option><option>Waiver</option></select></label>
 <label class="span2">Remarks<textarea id="remarks"></textarea></label>
@@ -89,4 +92,4 @@
 <div class="dialog-actions"><button value="cancel" class="btn btn-ghost">Cancel</button><button type="button" id="btnSave" class="btn btn-primary">Save Entry</button></div>
 </form></dialog>
 <script src="config.js"></script><script src="core.js"></script><script src="register.js"></script>
-</body></html>
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation"><a href="index.html">⌂<span>Home</span></a><a href="register.html">▤<span>Register</span></a><a href="yearly.html">▥<span>Yearly</span></a><a href="reports.html">⌕<span>Reports</span></a><a href="admin.html">⚙<span>Admin</span></a></nav></body></html>

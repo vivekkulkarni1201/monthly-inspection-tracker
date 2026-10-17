@@ -17,6 +17,7 @@
       <a class="nav " data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
       <a class="nav " data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
       <a class="nav " data-page="yearly" href="yearly.html"><span class="nicon">▥</span><span>Yearly Summary</span></a>
+      <a class="nav " data-page="reports" href="reports.html"><span class="nicon">⌕</span><span>Reports</span></a>
       <a class="nav active" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
     </nav>
   <div class="live-card"><i id="liveDot" class="live-dot"></i><div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div></div>
@@ -73,6 +74,12 @@
     <label>Waiver Customers / Inspections
       <input id="histWaiver" type="number" min="0" value="0">
     </label>
+    <label>Total Date Revisions
+      <input id="histRevisionCount" type="number" min="0" value="0">
+    </label>
+    <label>Inspections with Issues
+      <input id="histInspectionsWithIssues" type="number" min="0" value="0">
+    </label>
     <label class="span2">Monthly Remarks
       <textarea id="histRemarks" rows="2" placeholder="Optional monthly summary / important note"></textarea>
     </label>
@@ -122,4 +129,4 @@
 <section class="admin-card span2 cloud-card"><div class="admin-title"><h3>Cloud Status</h3><span>Supabase</span></div><p>This V4 patch stores the safe Project URL + Publishable Key in <b>config.js</b>, so mobile and desktop automatically connect to the same database. No per-device setup required.</p><div id="cloudStatus" class="helper"></div><p class="warn">Secret key is never used in the browser.</p></section>
 </div><div id="modeNote" class="mode-note"></div></main></section></div>
 <script src="config.js"></script><script src="core.js"></script><script src="admin.js"></script>
-</body></html>
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation"><a href="index.html">⌂<span>Home</span></a><a href="register.html">▤<span>Register</span></a><a href="yearly.html">▥<span>Yearly</span></a><a href="reports.html">⌕<span>Reports</span></a><a href="admin.html">⚙<span>Admin</span></a></nav></body></html>

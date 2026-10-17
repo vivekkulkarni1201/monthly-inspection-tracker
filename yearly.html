@@ -15,11 +15,13 @@
 <aside class="sidebar">
 <div class="brand brand-reference">
       <div class="brand-reference-art" aria-label="Vertiv"></div>
-      
+      <div class="brand-reference-tagline">Keep it Humming</div>
+    </div>
 <nav>
       <a class="nav " data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
       <a class="nav " data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
       <a class="nav active" data-page="yearly" href="yearly.html"><span class="nicon">▥</span><span>Yearly Summary</span></a>
+      <a class="nav " data-page="reports" href="reports.html"><span class="nicon">⌕</span><span>Reports</span></a>
       <a class="nav " data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
     </nav>
 <div class="live-card"><i id="liveDot" class="live-dot"></i><div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div></div>
@@ -43,6 +45,7 @@
   <div class="year-kpi orange"><small>Total Date Revisions</small><strong id="yearRevisions">0</strong></div>
   <div class="year-kpi red"><small>Cancelled</small><strong id="yearCancelled">0</strong></div>
   <div class="year-kpi purple"><small>Waiver</small><strong id="yearWaiver">0</strong></div>
+  <div class="year-kpi cyan"><small>Inspections with Issues</small><strong id="yearIssueInspections">0</strong></div>
   <div class="year-kpi pink"><small>Issue Incidents</small><strong id="yearIssues">0</strong></div>
 </section>
 
@@ -52,7 +55,7 @@
     <div class="year-chart-box"><canvas id="yearTrendChart"></canvas></div>
   </article>
   <article class="card chart-card">
-    <div class="card-head"><div><h3>Schedule Reliability</h3><p>Completed, delayed/revised, cancelled and waiver</p></div></div>
+    <div class="card-head"><div><h3>Schedule Reliability</h3><p>Delayed/revised can also be completed; bars are independent counts, not exclusive buckets.</p></div></div>
     <div class="year-chart-box small"><canvas id="yearStatusChart"></canvas></div>
   </article>
 </section>
@@ -62,7 +65,7 @@
   <div class="table-wrap">
     <table class="year-summary-table">
       <thead><tr>
-        <th>Month</th><th>Manufactured UPS</th><th>Offered UPS</th><th>Planned Inspections</th><th>Completed</th><th>Delayed / Revised</th><th>Revision Count</th><th>Cancelled</th><th>Waiver</th><th>Issues</th>
+        <th>Month</th><th>Manufactured UPS</th><th>Offered UPS</th><th>Planned Inspections</th><th>Completed</th><th>Delayed / Revised</th><th>Revision Count</th><th>Cancelled</th><th>Waiver</th><th>Inspections with Issues</th><th>Issue Incidents</th>
       </tr></thead>
       <tbody id="yearSummaryBody"></tbody>
     </table>
@@ -71,4 +74,4 @@
 <div id="modeNote" class="mode-note"></div>
 </main></section></div>
 <script src="config.js"></script><script src="core.js"></script><script src="yearly.js"></script>
-</body></html>
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation"><a href="index.html">⌂<span>Home</span></a><a href="register.html">▤<span>Register</span></a><a href="yearly.html">▥<span>Yearly</span></a><a href="reports.html">⌕<span>Reports</span></a><a href="admin.html">⚙<span>Admin</span></a></nav></body></html>
