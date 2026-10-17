@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Monthly Inspection Tracking</title>
   <link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#071522">
+<link rel="icon" href="icon-192.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
@@ -20,8 +23,9 @@
 
     <nav>
       <a class="nav active" data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
-      <a class="nav" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
-      <a class="nav" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
+      <a class="nav " data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
+      <a class="nav " data-page="yearly" href="yearly.html"><span class="nicon">▥</span><span>Yearly Summary</span></a>
+      <a class="nav " data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
     </nav>
 
     <div class="live-card">
@@ -43,6 +47,7 @@
           <div id="monthMenu" class="month-menu"></div>
           <select id="monthPicker" class="sr-only"></select>
         </div>
+        <button id="btnInstallApp" class="btn btn-orange pwa-install" type="button" hidden>⬇ Install App</button>
         <a class="btn btn-ghost" href="admin.html">⚙ Admin</a>
         <a class="btn btn-primary" href="register.html?action=add">＋ Add New Entry</a>
       </div>
@@ -70,6 +75,15 @@
           </svg>
           <div class="kpi-divider"></div>
           <div class="kpi-copy"><label>Offered for Inspection</label><strong id="kpiOffered">0</strong><small>Inspection quantity</small></div>
+        </article>
+        <article class="kpi kpi-indigo">
+          <div class="kpi-aura"></div>
+          <svg class="kpi-svg" viewBox="0 0 64 64" aria-hidden="true">
+            <rect x="13" y="14" width="38" height="38" rx="5" fill="none" stroke="currentColor" stroke-width="3.2"/>
+            <path d="M22 10v9M42 10v9M13 25h38M21 34h8M35 34h8M21 43h8M35 43h8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </svg>
+          <div class="kpi-divider"></div>
+          <div class="kpi-copy"><label>Planned Customer Inspections</label><strong id="kpiPlanned">0</strong><small>Customer / inspection count</small></div>
         </article>
 
         <article class="kpi kpi-green">
@@ -162,8 +176,8 @@
             <thead>
               <tr>
                 <th>#</th><th>Customer / Project</th><th>Qty</th><th>kVA</th><th>Type</th><th>Inspection Given By</th>
-                <th>Planned Date</th><th>Actual Inspection Date</th><th>Days / Delay</th><th>Status</th>
-                <th>Issue Type</th><th>Issue at the Time</th><th>Remarks</th><th>Actions</th>
+                <th>Planned Date</th><th>Latest Revised Date</th><th>Revision Count</th><th>Actual Inspection Date</th><th>Days / Delay</th><th>Status</th>
+                <th>Issues</th><th>Issue Details</th><th>Remarks</th><th>Actions</th>
               </tr>
             </thead>
             <tbody id="dashboardBody"></tbody>

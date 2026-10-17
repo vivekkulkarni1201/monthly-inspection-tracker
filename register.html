@@ -1,6 +1,9 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Monthly Inspection Register</title><link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#071522">
+<link rel="icon" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head><body><div id="toast"></div>
@@ -12,10 +15,11 @@
     </div>
 
     <nav>
-    <a class="nav" data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
-    <a class="nav" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
-    <a class="nav" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
-  </nav>
+      <a class="nav " data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
+      <a class="nav active" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
+      <a class="nav " data-page="yearly" href="yearly.html"><span class="nicon">▥</span><span>Yearly Summary</span></a>
+      <a class="nav " data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
+    </nav>
   <div class="live-card"><i id="liveDot" class="live-dot"></i><div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div></div>
 </aside>
 <section class="page">
@@ -27,6 +31,7 @@
         <div id="monthMenu" class="month-menu"></div>
         <select id="monthPicker" class="sr-only"></select>
       </div>
+      <button id="btnInstallApp" class="btn btn-orange pwa-install" type="button" hidden>⬇ Install App</button>
       <a class="btn btn-ghost" href="index.html">Dashboard</a>
       <button id="btnAdd" class="btn btn-primary">＋ Add New Entry</button>
     </div>
@@ -34,7 +39,7 @@
 <main>
 <section class="filterbar">
   <select id="filterType"><option value="">All UPS Types</option></select>
-  <select id="filterStatus"><option value="">All Status</option><option>Completed</option><option>Delayed</option><option>Cancelled</option><option>Waiver</option><option>Planned</option></select>
+  <select id="filterStatus"><option value="">All Status</option><option>Completed</option><option>Cancelled</option><option>Waiver</option><option>Planned</option><option value="__DELAYED__">Delayed / Revised</option></select>
   <select id="filterIssue"><option value="">All Issue Types</option></select>
   <input id="searchBox" placeholder="Search customer, engineer, issue...">
   <button id="btnReset" class="btn btn-ghost">Reset</button><button id="btnExport" class="btn btn-excel">Excel Export</button>
@@ -43,8 +48,8 @@
 <div class="table-head"><div><h3>Inspection Records</h3><p>Cancelled is red, waiver is purple, delay is amber.</p></div><button id="btnAdd2" class="btn btn-primary btn-sm">＋ Add Entry</button></div>
 <div class="table-wrap"><table><thead><tr>
 <th>#</th><th>Customer / Project</th><th>Qty</th><th>kVA</th><th>Type</th><th>Inspection Given By</th><th>Planned Date</th>
-<th>Revised 1</th><th>Revised 2</th><th>Revised 3</th><th>Revised 4</th><th>Revised 5</th><th>Actual Inspection Date</th>
-<th>Days / Delay</th><th>Status</th><th>Issue Type</th><th>Issue at the Time</th><th>Remarks</th><th>Actions</th>
+<th>Latest Revised Date</th><th>Revision Count</th><th>Revision Reasons</th><th>Actual Inspection Date</th>
+<th>Days / Delay</th><th>Status</th><th>Issues</th><th>Issue Details</th><th>Remarks</th><th>Actions</th>
 </tr></thead><tbody id="inspectionBody"></tbody></table></div>
 </section>
 <div id="modeNote" class="mode-note"></div>
@@ -52,16 +57,35 @@
 
 <dialog id="entryDialog"><form method="dialog">
 <div class="dialog-head"><div><h2 id="entryTitle">Add Inspection Entry</h2><p>Planning, actual inspection and issue details.</p></div><button class="close" value="cancel">×</button></div>
-<input id="entryId" type="hidden"><div class="form-grid">
-<label>Customer / Project<input id="customer"></label><label>Qty<input id="qty" type="number" min="1" value="1"></label>
-<label>kVA Rating<input id="kva" type="number" min="1"></label><label>UPS Type<select id="upsType"></select></label>
-<label>Inspection Given By<select id="engineer"></select></label><label>Planned Inspection Date<input id="plannedDate" type="date"></label>
-<label>Revised Date 1<input id="rev1" type="date"></label><label>Revised Date 2<input id="rev2" type="date"></label>
-<label>Revised Date 3<input id="rev3" type="date"></label><label>Revised Date 4<input id="rev4" type="date"></label>
-<label>Revised Date 5<input id="rev5" type="date"></label><label>Actual Inspection Date<input id="actualDate" type="date"></label>
-<label>Status<select id="status"><option>Planned</option><option>Completed</option><option>Delayed</option><option>Cancelled</option><option>Waiver</option></select></label>
-<label>Issue Type<select id="issueType"></select></label><label class="span2">Issue at the Time<textarea id="issueAtTime"></textarea></label>
-<label class="span2">Remarks<textarea id="remarks"></textarea></label></div>
+<input id="entryId" type="hidden"><input id="eventKey" type="hidden"><div class="form-grid">
+<label>Customer / Project<input id="customer"></label><label>SO No<input id="soNo"></label>
+<label>Qty<input id="qty" type="number" min="1" value="1"></label><label>kVA Rating<input id="kva" type="number" min="1"></label>
+<label>UPS Type<select id="upsType"></select></label><label>Inspection Given By<select id="engineer"></select></label>
+<label>Planned Inspection Date<input id="plannedDate" type="date"></label><label>Actual Inspection Date<input id="actualDate" type="date"></label>
+<label>Status<select id="status"><option>Planned</option><option>Completed</option><option>Cancelled</option><option>Waiver</option></select></label>
+<label class="span2">Remarks<textarea id="remarks"></textarea></label>
+
+<div class="span2 revision-box">
+  <div class="multi-issue-head">
+    <div>
+      <h3>Inspection Date Revisions</h3>
+      <p>Any revised date automatically counts this customer inspection as Delayed. Add the customer reason for each revision.</p>
+    </div>
+    <button type="button" id="btnAddRevision" class="btn btn-ghost btn-sm">＋ Add Revised Date</button>
+  </div>
+  <div id="revisionRows" class="revision-list"></div>
+</div>
+
+<div class="span2 multi-issue-box">
+  <div class="multi-issue-head">
+    <div>
+      <h3>Issues During Inspection</h3>
+      <p>Add multiple issues against the same customer / inspection. UPS Qty does not change issue count.</p>
+    </div>
+    <button type="button" id="btnAddIssue" class="btn btn-ghost btn-sm">＋ Add Issue</button>
+  </div>
+  <div id="inspectionIssueRows" class="multi-issue-list"></div>
+</div></div>
 <div class="dialog-actions"><button value="cancel" class="btn btn-ghost">Cancel</button><button type="button" id="btnSave" class="btn btn-primary">Save Entry</button></div>
 </form></dialog>
 <script src="config.js"></script><script src="core.js"></script><script src="register.js"></script>

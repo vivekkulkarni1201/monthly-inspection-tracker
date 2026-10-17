@@ -1,6 +1,10 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Inspection Admin</title>
-<link rel="stylesheet" href="styles.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#071522">
+<link rel="icon" href="icon-192.png"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head><body><div id="toast"></div>
 <div class="app">
 <aside class="sidebar">
@@ -10,18 +14,32 @@
     </div>
 
     <nav>
-    <a class="nav" data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
-    <a class="nav" data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
-    <a class="nav" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
-  </nav>
+      <a class="nav " data-page="dashboard" href="index.html"><span class="nicon">⌂</span><span>Dashboard</span></a>
+      <a class="nav " data-page="register" href="register.html"><span class="nicon">▤</span><span>Monthly Register</span></a>
+      <a class="nav " data-page="yearly" href="yearly.html"><span class="nicon">▥</span><span>Yearly Summary</span></a>
+      <a class="nav active" data-page="admin" href="admin.html"><span class="nicon">⚙</span><span>Admin Settings</span></a>
+    </nav>
   <div class="live-card"><i id="liveDot" class="live-dot"></i><div><b id="liveText">Connecting...</b><small id="liveSub">Supabase</small></div></div>
 </aside>
-<section class="page"><header class="topbar"><div><h1>Admin Settings</h1><p>Manage production totals and master data.</p></div><div class="top-actions"><a class="btn btn-ghost" href="index.html">Dashboard</a></div></header>
+<section class="page"><header class="topbar"><div><h1>Admin Settings</h1><p>Manage production totals and master data.</p></div><div class="top-actions"><button id="btnInstallApp" class="btn btn-orange pwa-install" type="button" hidden>⬇ Install App</button><a class="btn btn-ghost" href="yearly.html">Yearly Summary</a><a class="btn btn-ghost" href="index.html">Dashboard</a></div></header>
 <main><div class="admin-grid">
 <section class="admin-card"><div class="admin-title"><h3>Monthly Production</h3><span>Manufactured Qty</span></div><p>Enter total UPS produced each month.</p><div id="productionRows"></div><button id="saveProduction" class="btn btn-primary">Save Production</button></section>
 <section class="admin-card"><div class="admin-title"><h3>Authorized Engineers</h3><span>Team</span></div><div class="inline"><input id="newEngineer" placeholder="Engineer name"><button id="addEngineer" class="btn btn-primary">Add</button></div><div id="engineerList"></div></section>
 <section class="admin-card"><div class="admin-title"><h3>UPS Type Master</h3><span>Dropdown</span></div><div class="inline"><input id="newUpsType" placeholder="UPS type"><button id="addUpsType" class="btn btn-primary">Add</button></div><div id="upsTypeList"></div></section>
 <section class="admin-card"><div class="admin-title"><h3>Issue Type Master</h3><span>Dropdown</span></div><div class="inline"><input id="newIssueType" placeholder="Issue type"><button id="addIssueType" class="btn btn-primary">Add</button></div><div id="issueTypeList"></div></section>
+
+
+<section class="admin-card span2 excel-import-card">
+  <div class="admin-title"><h3>Excel Inspection Schedule Import</h3><span>Legacy Workbook</span></div>
+  <p>Upload your monthly inspection schedule workbook (JAN-26, FEB-26... sheets). The importer keeps UPS quantity at line level but groups customer inspections by Customer + SO + planned date, so KPI counts stay correct.</p>
+  <div class="excel-import-toolbar">
+    <input id="scheduleWorkbook" type="file" accept=".xlsx,.xls">
+    <button id="previewScheduleImport" class="btn btn-ghost" type="button">Preview Import</button>
+    <button id="confirmScheduleImport" class="btn btn-primary" type="button" disabled>Import to Supabase</button>
+  </div>
+  <div id="excelImportStatus" class="helper"></div>
+  <div id="excelImportPreview" class="excel-preview"></div>
+</section>
 
 <section class="admin-card span2 history-card">
   <div class="admin-title">
