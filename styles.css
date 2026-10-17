@@ -1130,3 +1130,24 @@ dialog::backdrop{background:#02070cbf;backdrop-filter:blur(4px)}
   .mobile-bottom-nav a span{font-size:8px;font-weight:700;letter-spacing:.2px}
   .mobile-bottom-nav a:active{background:#0d3457;color:#fff}
 }
+
+
+/* HOTFIX — Inspections with Issues KPI */
+.kpi-grid{grid-template-columns:repeat(8,minmax(0,1fr));}
+.kpi-v9 .kpi-pink{
+  color:#ff87b7;
+  background:linear-gradient(135deg,#4b1631,#2d1022 70%);
+  border-color:#ff5d9d;
+  box-shadow:0 0 24px rgba(255,93,157,.22),0 12px 24px #0007;
+}
+.kpi-v9 .kpi-pink .kpi-svg{color:#ff9bc4}
+
+@media(max-width:1700px){
+  .kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+}
+@media(max-width:1100px){
+  .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:720px){
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}

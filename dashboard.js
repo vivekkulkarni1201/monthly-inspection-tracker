@@ -15,7 +15,7 @@ async function bootDashboard(){
 function renderDashboard(){
   const m=currentMonthKey(),rows=rowsForMonth(m),snap=monthSnapshot(m);
   $("kpiManufactured").textContent=snap.manufactured;$("kpiOffered").textContent=snap.offered;$("kpiPlanned").textContent=snap.planned_inspections;
-  $("kpiCompleted").textContent=snap.completed;$("kpiDelayed").textContent=snap.delayed;$("kpiCancelled").textContent=snap.cancelled;$("kpiWaiver").textContent=snap.waiver;
+  $("kpiCompleted").textContent=snap.completed;$("kpiDelayed").textContent=snap.delayed;$("kpiCancelled").textContent=snap.cancelled;$("kpiWaiver").textContent=snap.waiver;$("kpiInspectionsWithIssues").textContent=snap.inspections_with_issues;
   renderHistoryBanner(snap);drawProduct(m);drawMonthly(m);drawIssues(m);renderDashboardTable(rows,snap)
 }
 function renderHistoryBanner(s){
