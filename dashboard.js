@@ -5,17 +5,60 @@ const barValuePlugin={id:"barValuePlugin",afterDatasetsDraw(chart){const{ctx}=ch
 const ISSUE_COLORS=["#ff5069","#ff9f43","#ffc93c","#43b8ff","#ad68ff","#3bd5a2","#91a5b7","#ef6df0"];
 
 async function bootDashboard(){
-  navLink("dashboard");buildMonthPicker();initPrettyMonthPicker(renderDashboard);
+  navLink("dashboard");
+  buildMonthPicker();
+  if(typeof initPrettyMonthPicker==="function")initPrettyMonthPicker(renderDashboard);
+  else if(typeof buildPrettyMonthPicker==="function")buildPrettyMonthPicker();
+
+  const hadCache=typeof loadPortalCache==="function" && loadPortalCache();
+
+  if(hadCache){
+    renderDashboard();
+    if($("modeNote"))$("modeNote").textContent="SYNCING LIVE DATA • Showing last saved values.";
+  }else{
+    setDashboardLoadingState(true);
+  }
+
   try{
     await initCloud();
-    ["inspections","monthly_production","monthly_history","monthly_history_products","monthly_history_issues","inspection_issues","inspection_revisions"].forEach(t=>subscribe(t,renderDashboard));
-    renderDashboard();$("modeNote").textContent="LIVE ONLINE • Supabase realtime connected on every device."
-  }catch(e){console.error(e);updateLiveBadge();$("modeNote").textContent="Cloud connection failed: "+e.message}
+    setDashboardLoadingState(false);
+
+    subscribe("inspections",renderDashboard);
+    subscribe("monthly_production",renderDashboard);
+    try{subscribe("monthly_history",renderDashboard)}catch(e){}
+    try{subscribe("monthly_history_products",renderDashboard)}catch(e){}
+    try{subscribe("monthly_history_issues",renderDashboard)}catch(e){}
+    try{subscribe("inspection_issues",renderDashboard)}catch(e){}
+
+    renderDashboard();
+    if($("modeNote"))$("modeNote").textContent="LIVE ONLINE • Supabase realtime connected.";
+  }catch(e){
+    console.error(e);
+    setDashboardLoadingState(false);
+    updateLiveBadge();
+    if($("modeNote"))$("modeNote").textContent=hadCache
+      ?"OFFLINE / SYNC FAILED • Showing last saved data."
+      :"Cloud connection failed: "+e.message;
+  }
+}
+
+function setDashboardLoadingState(loading){
+  const ids=["kpiManufactured","kpiOffered","kpiPlanned","kpiCompleted","kpiDelayed","kpiCancelled","kpiWaiver","kpiInspectionsWithIssues"];
+  ids.forEach(id=>{
+    const el=$(id); if(!el)return;
+    if(loading){
+      el.textContent="—";
+      el.classList.add("loading-value");
+    }else{
+      el.classList.remove("loading-value");
+    }
+  });
+  document.querySelectorAll(".dashboard-grid .card").forEach(c=>c.classList.toggle("loading-card",loading));
 }
 function renderDashboard(){
   const m=currentMonthKey(),rows=rowsForMonth(m),snap=monthSnapshot(m);
   $("kpiManufactured").textContent=snap.manufactured;$("kpiOffered").textContent=snap.offered;$("kpiPlanned").textContent=snap.planned_inspections;
-  $("kpiCompleted").textContent=snap.completed;$("kpiDelayed").textContent=snap.delayed;$("kpiCancelled").textContent=snap.cancelled;$("kpiWaiver").textContent=snap.waiver;$("kpiInspectionsWithIssues").textContent=snap.inspections_with_issues;
+  $("kpiCompleted").textContent=snap.completed;$("kpiDelayed").textContent=snap.delayed;$("kpiCancelled").textContent=snap.cancelled;$("kpiWaiver").textContent=snap.waiver;
   renderHistoryBanner(snap);drawProduct(m);drawMonthly(m);drawIssues(m);renderDashboardTable(rows,snap)
 }
 function renderHistoryBanner(s){

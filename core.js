@@ -5,6 +5,38 @@ const YEARS=[2024,2025,2026];
 
 let db=null,online=false;
 let inspections=[],upsTypes=[],issueTypes=[],engineers=[],production={};
+
+const PORTAL_CACHE_KEY="monthly_inspection_portal_cache_v1";
+function savePortalCache(){
+  try{
+    localStorage.setItem(PORTAL_CACHE_KEY,JSON.stringify({
+      ts:Date.now(), inspections,upsTypes,issueTypes,engineers,production,
+      historySummaries:typeof historySummaries!=="undefined"?historySummaries:[],
+      historyProducts:typeof historyProducts!=="undefined"?historyProducts:[],
+      historyIssues:typeof historyIssues!=="undefined"?historyIssues:[],
+      inspectionIssues:typeof inspectionIssues!=="undefined"?inspectionIssues:[]
+    }));
+  }catch(e){}
+}
+function loadPortalCache(){
+  try{
+    const raw=localStorage.getItem(PORTAL_CACHE_KEY);
+    if(!raw)return false;
+    const c=JSON.parse(raw);
+    if(!c||!Array.isArray(c.inspections))return false;
+    inspections=c.inspections||[];
+    upsTypes=c.upsTypes||[];
+    issueTypes=c.issueTypes||[];
+    engineers=c.engineers||[];
+    production=c.production||{};
+    if(typeof historySummaries!=="undefined")historySummaries=c.historySummaries||[];
+    if(typeof historyProducts!=="undefined")historyProducts=c.historyProducts||[];
+    if(typeof historyIssues!=="undefined")historyIssues=c.historyIssues||[];
+    if(typeof inspectionIssues!=="undefined")inspectionIssues=c.inspectionIssues||[];
+    window.__portalCacheTimestamp=c.ts||0;
+    return true;
+  }catch(e){return false}
+}
 let historySummaries=[],historyProducts=[],historyIssues=[],inspectionIssues=[],inspectionRevisions=[];
 let deferredInstallPrompt=null;
 
@@ -67,6 +99,7 @@ async function loadAll(){
     optionalTable("monthly_history","month"),optionalTable("monthly_history_products","month"),optionalTable("monthly_history_issues","month"),
     optionalTable("inspection_issues","id"),optionalTable("inspection_revisions","id")
   ]);
+  savePortalCache();
 }
 function updateLiveBadge(){
   const t=$("liveText"),s=$("liveSub"),d=$("liveDot");
